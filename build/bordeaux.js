@@ -114,7 +114,6 @@
     __extends(Image, _super);
 
     function Image() {
-      this.hasValidClickZone = __bind(this.hasValidClickZone, this);
       this.hasValidAnimation = __bind(this.hasValidAnimation, this);
       this.hasValidUrl = __bind(this.hasValidUrl, this);
       this.initialize = __bind(this.initialize, this);      _ref = Image.__super__.constructor.apply(this, arguments);
@@ -130,9 +129,6 @@
       if (!this.hasValidUrl()) {
         throw new Error("Invalid URL '" + (this.get('url')) + "'");
       }
-      if (!this.hasValidClickZone()) {
-        throw new Error("Invalid click zone");
-      }
     };
 
     Image.prototype.hasValidUrl = function() {
@@ -143,10 +139,6 @@
       var _ref1;
 
       return _ref1 = this.get('animation'), __indexOf.call(this.animations, _ref1) >= 0;
-    };
-
-    Image.prototype.hasValidClickZone = function() {
-      return this.get('click') && this.get('click').x && this.get('click').y && this.get('click').x > 0 && this.get('click').x < 320 && this.get('click').y > 0 && this.get('click').y < 480;
     };
 
     return Image;
@@ -172,26 +164,6 @@
     return Images;
 
   })(Backbone.Collection);
-
-}).call(this);
-(function() {
-  var _ref;
-
-  if ((_ref = window.JST) == null) {
-    window.JST = {};
-  }
-
-  window.JST['click_zone'] = function(context) {
-    return (function() {
-      var $c, $e, $o;
-
-      $e = window.HAML.escape;
-      $c = window.HAML.cleanValue;
-      $o = [];
-      $o.push("<div class='click-zone' style='position: absolute; top: " + ($e($c(this.image.get('click').x))) + "px; left: " + ($e($c(this.image.get('click').y))) + "px'></div>");
-      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
-    }).call(window.HAML.context(context));
-  };
 
 }).call(this);
 (function() {
