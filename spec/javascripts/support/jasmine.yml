@@ -11,6 +11,7 @@
 #   - dist/**/*.js
 #
 src_files:
+    - vendor/underscore.js
     - vendor/**/*.js
     - build/**/*.js
 

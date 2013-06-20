@@ -11,10 +11,12 @@ namespace :assets do
 
   task :compile_javascripts do
     compile_asset('build', 'bordeaux.js', :development)
+    `terminal-notifier-success -message "Compiled bordeaux.js"`
   end
 
   task :compile_stylesheets do
     compile_asset('build', 'bordeaux.css', :development)
+    `terminal-notifier-success -message "Compiled bordeaux.css"`
   end
 end
 

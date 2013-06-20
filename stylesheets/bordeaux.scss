@@ -3,8 +3,12 @@
   width: 320px;
   height: 480px;
   border: 10px solid black;
-  margin: 50px auto; }
+  margin: 50px auto;
+}
 
-.image-container img {
-  width: 320px;
-  height: 480px; }
+.image-container {
+  img {
+    width: 320px;
+    height: 480px;
+  }
+}

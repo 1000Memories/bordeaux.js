@@ -3,18 +3,69 @@
   <head>
     <title>Bordeaux.js</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="vendor/reset.css">
     <link rel="stylesheet" href="build/bordeaux.css">
+    <script src="vendor/underscore.js"></script>
     <script src="vendor/jquery.js"></script>
+    <script src="vendor/backbone.js"></script>
     <script src="build/bordeaux.js"></script>
   </head>
   <body>
-    <h1>Bordeaux.js</h1>
+    <div id="images-view"></div>
 
-    <!-- TODO - remove this test -->
     <script>
       $(function() {
-        new Test();
+        var json = [
+          {
+            url: 'images/screenshots/1.png',
+            animation: 'fade'
+          },
+          {
+            url: 'images/screenshots/2.png',
+            animation: 'slideUp'
+          },
+          {
+            url: 'images/screenshots/3.png',
+            animation: 'slideLeft'
+          },
+          {
+            url: 'images/screenshots/4.png',
+            animation: 'fade'
+          },
+          {
+            url: 'images/screenshots/5.png',
+            animation: 'slideUp'
+          },
+          {
+            url: 'images/screenshots/6.png',
+            animation: 'slideLeft'
+          },
+          {
+            url: 'images/screenshots/7.png',
+            animation: 'fade'
+          },
+          {
+            url: 'images/screenshots/8.png',
+            animation: 'slideUp'
+          },
+          {
+            url: 'images/screenshots/9.png',
+            animation: 'slideLeft'
+          },
+          {
+            url: 'images/screenshots/10.png',
+            animation: 'slideLeft'
+          },
+          {
+            url: 'images/screenshots/11.png',
+            animation: 'slideLeft'
+          }
+        ];
+        var images = new Bordeaux.Images(json);
+        new Bordeaux.ImagesView({collection: images});
       });
     </script>
   </body>
 </html>
+
+<!-- rudy adler was here -->

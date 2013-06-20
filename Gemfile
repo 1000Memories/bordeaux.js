@@ -9,4 +9,7 @@ group :development, :test do
   gem 'sprockets-sass'
   gem 'sass'
   gem 'rake'
+  gem 'terminal-notifier-guard'
+  gem 'haml_coffee_assets'
+  gem 'execjs'
 end

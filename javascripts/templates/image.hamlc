@@ -1,0 +1,2 @@
+.image-container
+  %img{:src => @image.get('url'), :alt => "image"}
