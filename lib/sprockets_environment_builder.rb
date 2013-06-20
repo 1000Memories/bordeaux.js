@@ -1,5 +1,6 @@
 require 'sprockets'
 require 'sprockets-sass'
+require 'haml_coffee_assets'
 
 class SprocketsEnvironmentBuilder
   def self.build(environment = :development)

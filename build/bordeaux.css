@@ -1,2 +1,6 @@
-body {
-  background: red; }
+#images-view {
+  position: relative;
+  width: 320px;
+  height: 480px;
+  border: 10px solid black;
+  margin: 50px auto; }
