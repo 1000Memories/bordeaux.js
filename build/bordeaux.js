@@ -70,6 +70,26 @@
 
 }).call(this);
 (function() {
+  var _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  this.Bordeaux.ImagesView = (function(_super) {
+    __extends(ImagesView, _super);
+
+    function ImagesView() {
+      _ref = ImagesView.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    ImagesView.prototype.el = '#images-view';
+
+    return ImagesView;
+
+  })(Backbone.View);
+
+}).call(this);
+(function() {
 
 
 }).call(this);
