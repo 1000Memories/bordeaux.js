@@ -187,6 +187,24 @@
 
 }).call(this);
 (function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['loading'] = function(context) {
+    return (function() {
+      var $o;
+
+      $o = [];
+      $o.push("<div class='loading-overlay'></div>");
+      return $o.join("\n").replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
   var _ref,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
@@ -315,6 +333,7 @@
     function ImagesView() {
       this.onImageClick = __bind(this.onImageClick, this);
       this.loadImage = __bind(this.loadImage, this);
+      this.preloadImages = __bind(this.preloadImages, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
@@ -329,7 +348,22 @@
       this.currentImageIndex = 0;
       this.isAnimating = false;
       this.animator = new Bordeaux.Animator();
-      return this.loadImage();
+      return this.preloadImages(this.loadImage);
+    };
+
+    ImagesView.prototype.preloadImages = function(done) {
+      var preloader,
+        _this = this;
+
+      this.$el.prepend(JST['loading']());
+      preloader = new ImagePreloader({
+        urls: this.collection.pluck('url'),
+        complete: function() {
+          _this.$el.find(".loading-overlay").remove();
+          return done();
+        }
+      });
+      return preloader.start();
     };
 
     ImagesView.prototype.loadImage = function() {
@@ -337,7 +371,6 @@
         _this = this;
 
       image = this.collection.models[this.currentImageIndex];
-      console.log(image);
       return this.animator[image.get('animation')](image, function() {
         return _this.isAnimating = false;
       });
