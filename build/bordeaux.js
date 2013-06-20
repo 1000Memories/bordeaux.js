@@ -114,6 +114,7 @@
     __extends(Image, _super);
 
     function Image() {
+      this.setAbsoluteUrl = __bind(this.setAbsoluteUrl, this);
       this.hasValidAnimation = __bind(this.hasValidAnimation, this);
       this.hasValidUrl = __bind(this.hasValidUrl, this);
       this.initialize = __bind(this.initialize, this);      _ref = Image.__super__.constructor.apply(this, arguments);
@@ -129,6 +130,7 @@
       if (!this.hasValidUrl()) {
         throw new Error("Invalid URL '" + (this.get('url')) + "'");
       }
+      return this.setAbsoluteUrl();
     };
 
     Image.prototype.hasValidUrl = function() {
@@ -139,6 +141,17 @@
       var _ref1;
 
       return _ref1 = this.get('animation'), __indexOf.call(this.animations, _ref1) >= 0;
+    };
+
+    Image.prototype.setAbsoluteUrl = function() {
+      var absolute;
+
+      if (this.get('url').match(/^https?:\/\//)) {
+        absolute = this.get('url');
+      } else {
+        absolute = URI(this.get('url')).absoluteTo(window.location.href).toString();
+      }
+      return this.set('absolute_url', absolute);
     };
 
     return Image;
@@ -352,8 +365,18 @@
     };
 
     ImagesView.prototype.preloadImages = function(done) {
+      var preloader,
+        _this = this;
+
       this.$el.prepend(JST['loading']());
-      return done();
+      preloader = new ImagePreloader({
+        urls: this.collection.pluck('url'),
+        complete: function() {
+          _this.$el.find(".loading-overlay").remove();
+          return done();
+        }
+      });
+      return preloader.start();
     };
 
     ImagesView.prototype.loadImage = function() {
@@ -361,7 +384,6 @@
         _this = this;
 
       image = this.collection.models[this.currentImageIndex];
-      console.log(image);
       return this.animator[image.get('animation')](image, function() {
         return _this.isAnimating = false;
       });
