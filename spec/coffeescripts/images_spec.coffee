@@ -3,29 +3,77 @@ describe "Images", ->
     @validJson = [
       {
         url: 'images/screenshots/1.png',
-        animation: 'fadeIn'
+        animation: 'fadeIn',
+        click: {
+          x: 10,
+          y: 150,
+        }
       },
       {
         url: 'images/screenshots/2.png',
-        animation: 'slideToUp'
+        animation: 'slideToTop',
+        click: {
+          x: 10,
+          y: 150,
+        }
       },
       {
         url: 'images/screenshots/3.png',
-        animation: 'slideToLeft'
+        animation: 'slideToLeft',
+        click: {
+          x: 10,
+          y: 150,
+        }
       }
     ]
 
     @invalidAnimationJson = [
       {
         url: 'valid.png',
-        animation: 'invalid'
+        animation: 'invalid',
+        click: {
+          x: 10,
+          y: 150,
+        }
       }
     ]
 
     @invalidUrlJson = [
       {
         url: '',
-        animation: 'fadeIn'
+        animation: 'fadeIn',
+        click: {
+          x: 10,
+          y: 150,
+        }
+      }
+    ]
+
+    @invalidJson_noClickZone = [
+      {
+        url: 'valid.png',
+        animation: 'fadeIn',
+      }
+    ]
+
+    @invalidJson_clickZoneNotComplete = [
+      {
+        url: 'valid.png',
+        animation: 'fadeIn',
+        click: {
+          x: 100,
+        }
+      }
+    ]
+
+    @invalidJson_clickZoneOutofBound = [
+      {
+        url: 'valid.png',
+        animation: 'fadeIn',
+        click: {
+          x: 1000,
+          y: 1000
+        }
       }
     ]
 
@@ -48,3 +96,32 @@ describe "Images", ->
   context "on initialize with invalid URL in JSON", =>
     it "throws an error", =>
       expect( => new Bordeaux.Images(@invalidUrlJson)).toThrow(new Error("Invalid URL ''"))
+
+  context "on initialize with invalid click zone in JSON", =>
+    context "the click zone is not defined", =>
+      it "throws an error", =>
+        expect( => new Bordeaux.Images(@invalidJson_noClickZone)).toThrow(new Error("Invalid click zone"))
+
+    context "the click is not completely defined", =>
+      it "throws an error", =>
+        expect( => new Bordeaux.Images(@invalidJson_clickZoneNotComplete)).toThrow(new Error("Invalid click zone"))
+
+    context "the click is out of bounds", =>
+      it "throws an error", =>
+        expect( => new Bordeaux.Images(@invalidJson_clickZoneOutofBound)).toThrow(new Error("Invalid click zone"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
