@@ -196,6 +196,7 @@
     __extends(ImagesView, _super);
 
     function ImagesView() {
+      this.onImageClick = __bind(this.onImageClick, this);
       this.loadImage = __bind(this.loadImage, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesView.__super__.constructor.apply(this, arguments);
       return _ref;
@@ -203,17 +204,30 @@
 
     ImagesView.prototype.el = '#images-view';
 
-    ImagesView.prototype.initialize = function() {
-      return this.loadImage(0);
+    ImagesView.prototype.events = {
+      'click .image-container': 'onImageClick'
     };
 
-    ImagesView.prototype.loadImage = function(i) {
+    ImagesView.prototype.initialize = function() {
+      this.currentImageIndex = 0;
+      return this.loadImage();
+    };
+
+    ImagesView.prototype.loadImage = function() {
       var image;
 
-      image = this.collection.models[i];
+      image = this.collection.models[this.currentImageIndex];
       return $("#images-view").html(JST['image']({
         image: image
       }));
+    };
+
+    ImagesView.prototype.onImageClick = function() {
+      this.currentImageIndex += 1;
+      if (this.currentImageIndex === this.collection.models.length) {
+        this.currentImageIndex = 0;
+      }
+      return this.loadImage();
     };
 
     return ImagesView;
