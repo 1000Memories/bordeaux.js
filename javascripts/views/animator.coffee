@@ -47,6 +47,15 @@ class @Bordeaux.Animator extends Backbone.View
       @reset()
       done()
 
+  flip: (nextImage, done) =>
+    flipHtml = JST['flip'](frontImageUrl: @$currentImage().attr('src'), backImageUrl: nextImage.get('url'))
+    @$el.html(flipHtml)
+    @$el.find(".flip-container").addClass("flip-to-back")
+    setTimeout( =>
+      @$el.html(@nextImageHtml(nextImage))
+      done()
+    , 620)
+
   reset: =>
     @$el.find("img:first").remove()
     @$currentImage().css('z-index', '')

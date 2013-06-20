@@ -1,0 +1,6 @@
+.flip-container
+  .flipper
+    .front
+      %img{:src => @frontImageUrl}
+    .back
+      %img{:src => @backImageUrl}
