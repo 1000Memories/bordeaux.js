@@ -188,8 +188,8 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>");
-      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '');
+      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>\n<div class='click-zone' style='position: absolute; top: " + ($e($c(this.image.get('click').x))) + "px; left: " + ($e($c(this.image.get('click').y))) + "px'></div>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
 
@@ -302,7 +302,6 @@
     };
 
     Animator.prototype.reset = function() {
-      this.$el.find("img:first").remove();
       return this.$currentImage().css('z-index', '');
     };
 
@@ -321,7 +320,8 @@
     __extends(ImagesView, _super);
 
     function ImagesView() {
-      this.onImageClick = __bind(this.onImageClick, this);
+      this.onClickZoneClick = __bind(this.onClickZoneClick, this);
+      this.onDoneAnimating = __bind(this.onDoneAnimating, this);
       this.loadImage = __bind(this.loadImage, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesView.__super__.constructor.apply(this, arguments);
       return _ref;
@@ -330,7 +330,7 @@
     ImagesView.prototype.el = '#images-view';
 
     ImagesView.prototype.events = {
-      'click .image-container': 'onImageClick'
+      'click .click-zone': 'onClickZoneClick'
     };
 
     ImagesView.prototype.initialize = function() {
@@ -341,19 +341,24 @@
     };
 
     ImagesView.prototype.loadImage = function() {
-      var image,
-        _this = this;
+      var image;
 
       image = this.collection.models[this.currentImageIndex];
-      return this.animator[image.get('animation')](image, function() {
-        return _this.isAnimating = false;
-      });
+      return this.animator[image.get('animation')](image, this.onDoneAnimating);
     };
 
-    ImagesView.prototype.onImageClick = function() {
+    ImagesView.prototype.onDoneAnimating = function() {
+      this.isAnimating = false;
+      return this.$el.find('.click-zone').show(0);
+    };
+
+    ImagesView.prototype.onClickZoneClick = function() {
       if (this.isAnimating) {
         return;
       }
+      this.$el.find('.click-zone').hide(100, function() {
+        return this.remove();
+      });
       this.isAnimating = true;
       this.currentImageIndex += 1;
       if (this.currentImageIndex === this.collection.models.length) {

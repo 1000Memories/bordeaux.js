@@ -1,7 +1,7 @@
 class @Bordeaux.ImagesView extends Backbone.View
   el: '#images-view'
   events:
-    'click .image-container': 'onImageClick'
+    'click .click-zone': 'onClickZoneClick'
 
   initialize: =>
     @currentImageIndex = 0
@@ -11,10 +11,15 @@ class @Bordeaux.ImagesView extends Backbone.View
 
   loadImage: =>
     image = @collection.models[@currentImageIndex]
-    @animator[image.get('animation')](image, => @isAnimating = false)
+    @animator[image.get('animation')](image, @onDoneAnimating)
 
-  onImageClick: =>
+  onDoneAnimating: =>
+    @isAnimating = false
+    @$el.find('.click-zone').show(0)
+
+  onClickZoneClick: =>
     return  if @isAnimating
+    @$el.find('.click-zone').hide(100, -> @remove())
     @isAnimating = true
     @currentImageIndex += 1
     #  loops back to the first image
