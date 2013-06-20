@@ -3,15 +3,15 @@ describe "Images", ->
     @validJson = [
       {
         url: 'images/screenshots/1.png',
-        animation: 'fade'
+        animation: 'fadeIn'
       },
       {
         url: 'images/screenshots/2.png',
-        animation: 'slideUp'
+        animation: 'slideToUp'
       },
       {
         url: 'images/screenshots/3.png',
-        animation: 'slideLeft'
+        animation: 'slideToLeft'
       }
     ]
 
@@ -25,7 +25,7 @@ describe "Images", ->
     @invalidUrlJson = [
       {
         url: '',
-        animation: 'fade'
+        animation: 'fadeIn'
       }
     ]
 

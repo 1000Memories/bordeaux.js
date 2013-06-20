@@ -14,7 +14,6 @@ class window.HAML
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;")
-      .replace(/\//g, "&#47;")
 
   # HAML Coffee clean value function. Beside just
   # cleaning `null` and `undefined` values, it

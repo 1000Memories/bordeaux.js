@@ -1,10 +1,9 @@
 class @Bordeaux.Image extends Backbone.Model
   animations: [
-    'fade',
-    'slideUp',
-    'slideDown',
-    'slideLeft',
-    'slideRight',
+    'fadeIn',
+    'slideToTop',
+    'slideToLeft',
+    'slideToRight',
     'none'
   ]
 

@@ -1,14 +1,31 @@
 #images-view {
   position: relative;
-  width: 320px;
-  height: 480px;
-  border: 10px solid black;
-  margin: 50px auto;
+  overflow: hidden;
+  img {
+    position: absolute;
+    left: 0;
+  }
 }
 
-.image-container {
-  img {
-    width: 320px;
-    height: 480px;
+
+#phone-background {
+  background-repeat: no-repeat;
+  margin: 50px auto;
+  &.iphone4 {
+    $screen-width: 320px;
+    $screen-height: 480px;
+    background-image: url('../images/phones/iphone4_black.jpg');
+    width: 439px;
+    height: 824px;
+    #images-view {
+      top: 129px;
+      left: 57px;
+      width: $screen-width;
+      height: $screen-height;
+    }
+    .image-container img {
+      width: $screen-width;
+      height: $screen-height;
+    }
   }
 }

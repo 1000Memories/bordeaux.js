@@ -5,11 +5,13 @@ class @Bordeaux.ImagesView extends Backbone.View
 
   initialize: =>
     @currentImageIndex = 0
+    @animator = new Bordeaux.Animator()
     @loadImage()
 
   loadImage: =>
     image = @collection.models[@currentImageIndex]
-    $("#images-view").html(JST['image'](image: image))
+    console.log image
+    @animator[image.get('animation')](image)
 
   onImageClick: =>
     @currentImageIndex += 1

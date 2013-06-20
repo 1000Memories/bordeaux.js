@@ -5,7 +5,7 @@
     function HAML() {}
 
     HAML.escape = function(text) {
-      return ("" + text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#47;");
+      return ("" + text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     };
 
     HAML.cleanValue = function(text) {
@@ -120,7 +120,7 @@
       return _ref;
     }
 
-    Image.prototype.animations = ['fade', 'slideUp', 'slideDown', 'slideLeft', 'slideRight', 'none'];
+    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'none'];
 
     Image.prototype.initialize = function() {
       if (!this.hasValidAnimation()) {
@@ -180,10 +180,98 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<div class='image-container'>\n  <img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>\n</div>");
-      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '');
     }).call(window.HAML.context(context));
   };
+
+}).call(this);
+(function() {
+  var _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  this.Bordeaux.Animator = (function(_super) {
+    __extends(Animator, _super);
+
+    function Animator() {
+      this.reset = __bind(this.reset, this);
+      this.slideToRight = __bind(this.slideToRight, this);
+      this.slideToLeft = __bind(this.slideToLeft, this);
+      this.slideToTop = __bind(this.slideToTop, this);
+      this.fadeIn = __bind(this.fadeIn, this);
+      this.none = __bind(this.none, this);
+      this.nextImageHtml = __bind(this.nextImageHtml, this);
+      this.$currentImage = __bind(this.$currentImage, this);      _ref = Animator.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    Animator.prototype.el = '.image-container';
+
+    Animator.prototype.$currentImage = function() {
+      return this.$el.find("img");
+    };
+
+    Animator.prototype.nextImageHtml = function(nextImage) {
+      return JST['image']({
+        image: nextImage
+      });
+    };
+
+    Animator.prototype.none = function(nextImage) {
+      return this.$el.html(this.nextImageHtml(nextImage));
+    };
+
+    Animator.prototype.fadeIn = function(nextImage) {
+      var _this = this;
+
+      return this.$currentImage().fadeOut(100, function() {
+        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(100);
+      });
+    };
+
+    Animator.prototype.slideToTop = function(nextImage) {
+      var $nextImage;
+
+      $nextImage = $(this.nextImageHtml(nextImage));
+      this.$el.append($nextImage);
+      $nextImage.css("top", 480).css('z-index', 1);
+      return $nextImage.animate({
+        top: "-=480"
+      }, 500, this.reset);
+    };
+
+    Animator.prototype.slideToLeft = function(nextImage) {
+      var $nextImage;
+
+      $nextImage = $(this.nextImageHtml(nextImage));
+      this.$el.append($nextImage);
+      $nextImage.css("left", 320).css('z-index', 1);
+      return $nextImage.animate({
+        left: "-=320"
+      }, 500, this.reset);
+    };
+
+    Animator.prototype.slideToRight = function(nextImage) {
+      var $nextImage;
+
+      $nextImage = $(this.nextImageHtml(nextImage));
+      this.$el.append($nextImage);
+      $nextImage.css("left", -320).css('z-index', 1);
+      return $nextImage.animate({
+        left: "+=320"
+      }, 500, this.reset);
+    };
+
+    Animator.prototype.reset = function() {
+      this.$el.find("img:first").remove();
+      return this.$currentImage().css('z-index', '');
+    };
+
+    return Animator;
+
+  })(Backbone.View);
 
 }).call(this);
 (function() {
@@ -210,6 +298,7 @@
 
     ImagesView.prototype.initialize = function() {
       this.currentImageIndex = 0;
+      this.animator = new Bordeaux.Animator();
       return this.loadImage();
     };
 
@@ -217,9 +306,8 @@
       var image;
 
       image = this.collection.models[this.currentImageIndex];
-      return $("#images-view").html(JST['image']({
-        image: image
-      }));
+      console.log(image);
+      return this.animator[image.get('animation')](image);
     };
 
     ImagesView.prototype.onImageClick = function() {

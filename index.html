@@ -11,54 +11,58 @@
     <script src="build/bordeaux.js"></script>
   </head>
   <body>
-    <div id="images-view"></div>
+    <div id="phone-background" class="iphone4">
+      <div id="images-view">
+        <div class="image-container"></div>
+      </div>
+    </div>
 
     <script>
       $(function() {
         var json = [
           {
             url: 'images/screenshots/1.png',
-            animation: 'fade'
+            animation: 'none'
           },
           {
             url: 'images/screenshots/2.png',
-            animation: 'slideUp'
+            animation: 'fadeIn'
           },
           {
             url: 'images/screenshots/3.png',
-            animation: 'slideLeft'
+            animation: 'slideToTop'
           },
           {
             url: 'images/screenshots/4.png',
-            animation: 'fade'
+            animation: 'slideToLeft'
           },
           {
             url: 'images/screenshots/5.png',
-            animation: 'slideUp'
+            animation: 'slideToRight'
           },
           {
             url: 'images/screenshots/6.png',
-            animation: 'slideLeft'
+            animation: 'fadeIn'
           },
           {
             url: 'images/screenshots/7.png',
-            animation: 'fade'
+            animation: 'fadeIn'
           },
           {
             url: 'images/screenshots/8.png',
-            animation: 'slideUp'
+            animation: 'fadeIn'
           },
           {
             url: 'images/screenshots/9.png',
-            animation: 'slideLeft'
+            animation: 'fadeIn'
           },
           {
             url: 'images/screenshots/10.png',
-            animation: 'slideLeft'
+            animation: 'fadeIn'
           },
           {
             url: 'images/screenshots/11.png',
-            animation: 'slideLeft'
+            animation: 'fadeIn'
           }
         ];
         var images = new Bordeaux.Images(json);
