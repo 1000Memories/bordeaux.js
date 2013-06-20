@@ -1,2 +1,3 @@
 .DS_Store
 spec/javascripts/*.js
+.sass-cache
