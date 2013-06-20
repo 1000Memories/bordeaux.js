@@ -7,7 +7,16 @@ class @Bordeaux.ImagesView extends Backbone.View
     @currentImageIndex = 0
     @isAnimating = false
     @animator = new Bordeaux.Animator()
-    @loadImage()
+    @preloadImages(@loadImage)
+
+  preloadImages: (done) =>
+    @$el.prepend(JST['loading']())
+    preloader = new ImagePreloader
+      urls: @collection.pluck('url')
+      complete: =>
+        @$el.find(".loading-overlay").remove()
+        done()
+    preloader.start()
 
   loadImage: =>
     image = @collection.models[@currentImageIndex]

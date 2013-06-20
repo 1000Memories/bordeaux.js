@@ -10,6 +10,13 @@
     height: 50px;
     z-index: 2;
     background-color: red; }
+  #images-view .loading-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #444444 url(../images/spinner-444.gif) no-repeat center center; }
 
 #phone-background {
   background-repeat: no-repeat;
