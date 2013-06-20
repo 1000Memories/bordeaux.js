@@ -120,7 +120,7 @@
       return _ref;
     }
 
-    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'none'];
+    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'flip', 'none'];
 
     Image.prototype.initialize = function() {
       if (!this.hasValidAnimation()) {
@@ -173,6 +173,26 @@
     window.JST = {};
   }
 
+  window.JST['flip'] = function(context) {
+    return (function() {
+      var $c, $e, $o;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<div class='flip-container'>\n  <div class='flipper'>\n    <div class='front'>\n      <img src='" + ($e($c(this.frontImageUrl))) + "'>\n    </div>\n    <div class='back'>\n      <img src='" + ($e($c(this.backImageUrl))) + "'>\n    </div>\n  </div>\n</div>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
   window.JST['image'] = function(context) {
     return (function() {
       var $c, $e, $o;
@@ -215,6 +235,7 @@
 
     function Animator() {
       this.reset = __bind(this.reset, this);
+      this.flip = __bind(this.flip, this);
       this.revealFromTop = __bind(this.revealFromTop, this);
       this.slideToRight = __bind(this.slideToRight, this);
       this.slideToLeft = __bind(this.slideToLeft, this);
@@ -309,6 +330,22 @@
         _this.reset();
         return done();
       });
+    };
+
+    Animator.prototype.flip = function(nextImage, done) {
+      var flipHtml,
+        _this = this;
+
+      flipHtml = JST['flip']({
+        frontImageUrl: this.$currentImage().attr('src'),
+        backImageUrl: nextImage.get('url')
+      });
+      this.$el.html(flipHtml);
+      this.$el.find(".flip-container").addClass("flip-to-back");
+      return setTimeout(function() {
+        _this.$el.html(_this.nextImageHtml(nextImage));
+        return done();
+      }, 620);
     };
 
     Animator.prototype.reset = function() {

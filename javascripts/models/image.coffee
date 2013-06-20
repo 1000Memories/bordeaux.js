@@ -5,6 +5,7 @@ class @Bordeaux.Image extends Backbone.Model
     'slideToLeft',
     'slideToRight',
     'revealFromTop',
+    'flip',
     'none'
   ]
 
