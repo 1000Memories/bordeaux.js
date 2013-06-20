@@ -2,7 +2,7 @@ class @Bordeaux.Animator extends Backbone.View
   el: '.image-container'
 
   $currentImage: =>
-    @$el.find("img")
+    @$el.find("img:first")
 
   nextImageHtml: (nextImage) =>
     JST['image'](image: nextImage)
@@ -18,7 +18,7 @@ class @Bordeaux.Animator extends Backbone.View
   slideToTop: (nextImage, done) =>
     $nextImage = $(@nextImageHtml(nextImage))
     @$el.append($nextImage)
-    $nextImage.css("top", 480).css('z-index', 1)
+    $nextImage.css("top", 480).css('z-index', 2)
     $nextImage.animate {top: "-=480"}, 500, =>
       @reset()
       done?()
@@ -26,7 +26,7 @@ class @Bordeaux.Animator extends Backbone.View
   slideToLeft: (nextImage, done) =>
     $nextImage = $(@nextImageHtml(nextImage))
     @$el.append($nextImage)
-    $nextImage.css("left", 320).css('z-index', 1)
+    $nextImage.css("left", 320).css('z-index', 2)
     $nextImage.animate {left: "-=320"}, 500, =>
       @reset()
       done?()
@@ -34,10 +34,18 @@ class @Bordeaux.Animator extends Backbone.View
   slideToRight: (nextImage, done) =>
     $nextImage = $(@nextImageHtml(nextImage))
     @$el.append($nextImage)
-    $nextImage.css("left", -320).css('z-index', 1)
+    $nextImage.css("left", -320).css('z-index', 2)
     $nextImage.animate {left: "+=320"}, 500, =>
       @reset()
       done?()
+
+  revealFromTop: (nextImage, done) =>
+    $nextImage = $(@nextImageHtml(nextImage))
+    @$el.append($nextImage)
+    $nextImage.css('z-index', 0).css('top', 0)
+    @$currentImage().animate {top: "+=480"}, 500, =>
+      @reset()
+      done()
 
   reset: =>
     @$el.find("img:first").remove()

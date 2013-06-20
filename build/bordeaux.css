@@ -18,5 +18,6 @@
       width: 320px;
       height: 480px; }
     #phone-background.iphone4 .image-container img {
+      z-index: 1;
       width: 320px;
       height: 480px; }

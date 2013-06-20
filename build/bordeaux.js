@@ -120,7 +120,7 @@
       return _ref;
     }
 
-    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'none'];
+    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'none'];
 
     Image.prototype.initialize = function() {
       if (!this.hasValidAnimation()) {
@@ -197,6 +197,7 @@
 
     function Animator() {
       this.reset = __bind(this.reset, this);
+      this.revealFromTop = __bind(this.revealFromTop, this);
       this.slideToRight = __bind(this.slideToRight, this);
       this.slideToLeft = __bind(this.slideToLeft, this);
       this.slideToTop = __bind(this.slideToTop, this);
@@ -210,7 +211,7 @@
     Animator.prototype.el = '.image-container';
 
     Animator.prototype.$currentImage = function() {
-      return this.$el.find("img");
+      return this.$el.find("img:first");
     };
 
     Animator.prototype.nextImageHtml = function(nextImage) {
@@ -238,7 +239,7 @@
 
       $nextImage = $(this.nextImageHtml(nextImage));
       this.$el.append($nextImage);
-      $nextImage.css("top", 480).css('z-index', 1);
+      $nextImage.css("top", 480).css('z-index', 2);
       return $nextImage.animate({
         top: "-=480"
       }, 500, function() {
@@ -253,7 +254,7 @@
 
       $nextImage = $(this.nextImageHtml(nextImage));
       this.$el.append($nextImage);
-      $nextImage.css("left", 320).css('z-index', 1);
+      $nextImage.css("left", 320).css('z-index', 2);
       return $nextImage.animate({
         left: "-=320"
       }, 500, function() {
@@ -268,12 +269,27 @@
 
       $nextImage = $(this.nextImageHtml(nextImage));
       this.$el.append($nextImage);
-      $nextImage.css("left", -320).css('z-index', 1);
+      $nextImage.css("left", -320).css('z-index', 2);
       return $nextImage.animate({
         left: "+=320"
       }, 500, function() {
         _this.reset();
         return typeof done === "function" ? done() : void 0;
+      });
+    };
+
+    Animator.prototype.revealFromTop = function(nextImage, done) {
+      var $nextImage,
+        _this = this;
+
+      $nextImage = $(this.nextImageHtml(nextImage));
+      this.$el.append($nextImage);
+      $nextImage.css('z-index', 0).css('top', 0);
+      return this.$currentImage().animate({
+        top: "+=480"
+      }, 500, function() {
+        _this.reset();
+        return done();
       });
     };
 

@@ -24,6 +24,7 @@
       height: $screen-height;
     }
     .image-container img {
+      z-index: 1;
       width: $screen-width;
       height: $screen-height;
     }
