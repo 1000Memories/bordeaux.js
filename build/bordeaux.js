@@ -345,7 +345,6 @@
         _this = this;
 
       image = this.collection.models[this.currentImageIndex];
-      console.log(image);
       return this.animator[image.get('animation')](image, function() {
         return _this.isAnimating = false;
       });

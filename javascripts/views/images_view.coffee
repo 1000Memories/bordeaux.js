@@ -11,7 +11,6 @@ class @Bordeaux.ImagesView extends Backbone.View
 
   loadImage: =>
     image = @collection.models[@currentImageIndex]
-    console.log image
     @animator[image.get('animation')](image, => @isAnimating = false)
 
   onImageClick: =>
