@@ -219,49 +219,62 @@
       });
     };
 
-    Animator.prototype.none = function(nextImage) {
-      return this.$el.html(this.nextImageHtml(nextImage));
+    Animator.prototype.none = function(nextImage, done) {
+      this.$el.html(this.nextImageHtml(nextImage));
+      return typeof done === "function" ? done() : void 0;
     };
 
-    Animator.prototype.fadeIn = function(nextImage) {
+    Animator.prototype.fadeIn = function(nextImage, done) {
       var _this = this;
 
       return this.$currentImage().fadeOut(100, function() {
-        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(100);
+        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(100, done);
       });
     };
 
-    Animator.prototype.slideToTop = function(nextImage) {
-      var $nextImage;
+    Animator.prototype.slideToTop = function(nextImage, done) {
+      var $nextImage,
+        _this = this;
 
       $nextImage = $(this.nextImageHtml(nextImage));
       this.$el.append($nextImage);
       $nextImage.css("top", 480).css('z-index', 1);
       return $nextImage.animate({
         top: "-=480"
-      }, 500, this.reset);
+      }, 500, function() {
+        _this.reset();
+        return typeof done === "function" ? done() : void 0;
+      });
     };
 
-    Animator.prototype.slideToLeft = function(nextImage) {
-      var $nextImage;
+    Animator.prototype.slideToLeft = function(nextImage, done) {
+      var $nextImage,
+        _this = this;
 
       $nextImage = $(this.nextImageHtml(nextImage));
       this.$el.append($nextImage);
       $nextImage.css("left", 320).css('z-index', 1);
       return $nextImage.animate({
         left: "-=320"
-      }, 500, this.reset);
+      }, 500, function() {
+        _this.reset();
+        return typeof done === "function" ? done() : void 0;
+      });
     };
 
-    Animator.prototype.slideToRight = function(nextImage) {
-      var $nextImage;
+    Animator.prototype.slideToRight = function(nextImage, done) {
+      var $nextImage,
+        _this = this;
 
       $nextImage = $(this.nextImageHtml(nextImage));
       this.$el.append($nextImage);
       $nextImage.css("left", -320).css('z-index', 1);
       return $nextImage.animate({
         left: "+=320"
-      }, 500, this.reset);
+      }, 500, function() {
+        _this.reset();
+        return typeof done === "function" ? done() : void 0;
+      });
     };
 
     Animator.prototype.reset = function() {
@@ -298,19 +311,27 @@
 
     ImagesView.prototype.initialize = function() {
       this.currentImageIndex = 0;
+      this.isAnimating = false;
       this.animator = new Bordeaux.Animator();
       return this.loadImage();
     };
 
     ImagesView.prototype.loadImage = function() {
-      var image;
+      var image,
+        _this = this;
 
       image = this.collection.models[this.currentImageIndex];
       console.log(image);
-      return this.animator[image.get('animation')](image);
+      return this.animator[image.get('animation')](image, function() {
+        return _this.isAnimating = false;
+      });
     };
 
     ImagesView.prototype.onImageClick = function() {
+      if (this.isAnimating) {
+        return;
+      }
+      this.isAnimating = true;
       this.currentImageIndex += 1;
       if (this.currentImageIndex === this.collection.models.length) {
         this.currentImageIndex = 0;
