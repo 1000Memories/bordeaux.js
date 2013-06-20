@@ -48,5 +48,5 @@ class @Bordeaux.Animator extends Backbone.View
       done()
 
   reset: =>
-    # @$el.find("img:first").remove()
+    @$el.find("img:first").remove()
     @$currentImage().css('z-index', '')

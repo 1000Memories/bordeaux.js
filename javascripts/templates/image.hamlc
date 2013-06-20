@@ -1,2 +1,1 @@
 %img{:src => @image.get('url'), :alt => "image"}
-.click-zone{:style => "position: absolute; top: #{@image.get('click').x}px; left: #{@image.get('click').y}px" }

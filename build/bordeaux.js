@@ -181,6 +181,26 @@
     window.JST = {};
   }
 
+  window.JST['click_zone'] = function(context) {
+    return (function() {
+      var $c, $e, $o;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<div class='click-zone' style='position: absolute; top: " + ($e($c(this.image.get('click').x))) + "px; left: " + ($e($c(this.image.get('click').y))) + "px'></div>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
   window.JST['image'] = function(context) {
     return (function() {
       var $c, $e, $o;
@@ -188,8 +208,8 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>\n<div class='click-zone' style='position: absolute; top: " + ($e($c(this.image.get('click').x))) + "px; left: " + ($e($c(this.image.get('click').y))) + "px'></div>");
-      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '');
     }).call(window.HAML.context(context));
   };
 
@@ -320,6 +340,7 @@
     };
 
     Animator.prototype.reset = function() {
+      this.$el.find("img:first").remove();
       return this.$currentImage().css('z-index', '');
     };
 
@@ -342,6 +363,7 @@
       this.onDoneAnimating = __bind(this.onDoneAnimating, this);
       this.loadImage = __bind(this.loadImage, this);
       this.preloadImages = __bind(this.preloadImages, this);
+      this.currentImage = __bind(this.currentImage, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
@@ -357,6 +379,10 @@
       this.isAnimating = false;
       this.animator = new Bordeaux.Animator();
       return this.preloadImages(this.loadImage);
+    };
+
+    ImagesView.prototype.currentImage = function() {
+      return this.collection.models[this.currentImageIndex];
     };
 
     ImagesView.prototype.preloadImages = function(done) {
@@ -375,15 +401,14 @@
     };
 
     ImagesView.prototype.loadImage = function() {
-      var image;
-
-      image = this.collection.models[this.currentImageIndex];
-      return this.animator[image.get('animation')](image, this.onDoneAnimating);
+      return this.animator[this.currentImage().get('animation')](this.currentImage(), this.onDoneAnimating);
     };
 
     ImagesView.prototype.onDoneAnimating = function() {
       this.isAnimating = false;
-      return this.$el.find('.click-zone').show(0);
+      return this.$el.append(JST['click_zone']({
+        image: this.currentImage()
+      }));
     };
 
     ImagesView.prototype.onClickZoneClick = function() {

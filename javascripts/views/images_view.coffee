@@ -9,6 +9,9 @@ class @Bordeaux.ImagesView extends Backbone.View
     @animator = new Bordeaux.Animator()
     @preloadImages(@loadImage)
 
+  currentImage: =>
+    @collection.models[@currentImageIndex]
+
   preloadImages: (done) =>
     @$el.prepend(JST['loading']())
     preloader = new ImagePreloader
@@ -19,12 +22,11 @@ class @Bordeaux.ImagesView extends Backbone.View
     preloader.start()
 
   loadImage: =>
-    image = @collection.models[@currentImageIndex]
-    @animator[image.get('animation')](image, @onDoneAnimating)
+    @animator[@currentImage().get('animation')](@currentImage(), @onDoneAnimating)
 
   onDoneAnimating: =>
     @isAnimating = false
-    @$el.find('.click-zone').show(0)
+    @$el.append(JST['click_zone'](image: @currentImage()))
 
   onClickZoneClick: =>
     return  if @isAnimating
