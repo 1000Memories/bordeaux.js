@@ -47,7 +47,8 @@ class @Bordeaux.ImagesView extends Backbone.View
   removeClickZone: (fadeOutDuration = 0) =>
     @$el.find('.click-zone-wrap').fadeOut(fadeOutDuration, -> @remove())
 
-  onClickZoneClick: =>
+  onClickZoneClick: (e) =>
+    e.preventDefault()
     return  if @isAnimating
     @removeClickZone(100)
     @isAnimating = true

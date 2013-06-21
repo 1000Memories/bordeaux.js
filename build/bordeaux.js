@@ -789,7 +789,8 @@
       });
     };
 
-    ImagesView.prototype.onClickZoneClick = function() {
+    ImagesView.prototype.onClickZoneClick = function(e) {
+      e.preventDefault();
       if (this.isAnimating) {
         return;
       }
