@@ -1,9 +1,9 @@
 %li.edit-image-form{:'data-cid' => @image.cid, :class => if Bordeaux.pageState.get('selected') == @image then "selected" else ""}
-  %input.image-url{:name => "url", :value => @image.get('url'), :placeholder => "Image URL"}
-  %a.remove{:href => "#"} &times;
+  %input.image-url{:name => "url", :value => @image.get('url'), :placeholder => "Image URL", :type => "text"}
+  %a.remove{:href => "#"} X
   %p
     %select{:name => "animation"}
       - for animation in Bordeaux.animations
         %option.animation{:value => animation, :selected => @image.get('animation') == animation}= animation
-    %input.coordinate{:name => "x", :value => @image.get('click').x, :placeholder => "X"}
-    %input.coordinate{:name => "y", :value => @image.get('click').y, :placeholder => "Y"}
+    %input.coordinate{:name => "x", :value => @image.get('click').x, :placeholder => "X", :type => "text"}
+    %input.coordinate{:name => "y", :value => @image.get('click').y, :placeholder => "Y", :type => "text"}
