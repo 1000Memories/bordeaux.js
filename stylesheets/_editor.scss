@@ -1,29 +1,48 @@
 #editor-view-wrap {
-  width: 500px;
+  width: 400px;
   float: left;
-  margin: 0 50px;
+  margin-right: 50px;
 }
 
 #editor-view {
-  background: #eee;
-  border: 1px solid #ccc;
+  width: 100%;
   border-bottom: none;
-  width: 500px;
   float: left;
   li {
+    position: relative;
+    background: rgb(245,245,245);
+    border: solid 1px rgb(230,230,230);
     padding: 12px 20px;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #fff;
+    margin-bottom: 10px;
     &.selected {
-      background: #bbb;
-      border-top: 1px solid #888;
-      border-bottom: 1px solid #888;
+      background: rgb(200,200,200);
+      &:hover {
+        background: rgb(210,210,210);
+        border: solid 1px rgb(245,245,245);
+      }
     }
     .image-url {
       width: 300px;
     }
     .coordinate {
       width: 40px;
+    }
+    .remove {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    &:hover {
+      background: rgb(240,240,240);
+      border: solid 1px rgb(230,230,230);
+      .remove {
+        display: block;
+        color: black;
+      }
     }
   }
 }

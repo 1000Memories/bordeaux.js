@@ -1,0 +1,38 @@
+#header {
+  height: 40px;
+  margin-bottom: 50px;
+  padding-bottom: 10px;
+  border-bottom: solid 1px #bbb;
+  .title {
+    float: left;
+    font-size: 36px;
+    font-weight: bold;
+    color:  #566c11;
+  }
+  .links {
+    float: right;
+    line-height: 58px;
+    a {
+      text-decoration: none;
+      color: #e98300;
+    }
+  }
+}
+
+#subheader {
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+  border-bottom: solid 1px #bbb;
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .hints {
+    font-size: 18px;
+    li {
+      margin-left: 20px;
+      margin-bottom: 5px;
+    }
+  }
+}
