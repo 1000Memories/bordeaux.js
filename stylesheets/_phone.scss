@@ -1,0 +1,22 @@
+#phone-background {
+  float: right;
+  background-repeat: no-repeat;
+  &.iphone4 {
+    $screen-width: 320px;
+    $screen-height: 480px;
+    background-image: url('../images/phones/iphone4_black.jpg');
+    width: 439px;
+    height: 824px;
+    #images-view {
+      top: 129px;
+      left: 57px;
+      width: $screen-width;
+      height: $screen-height;
+    }
+    .image-container img {
+      z-index: 1;
+      width: $screen-width;
+      height: $screen-height;
+    }
+  }
+}

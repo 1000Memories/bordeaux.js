@@ -1,3 +1,72 @@
+#editor-view-wrap {
+  width: 500px;
+  float: left;
+  margin: 0 50px; }
+
+#editor-view {
+  background: #eee;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  width: 500px;
+  float: left; }
+  #editor-view li {
+    padding: 12px 20px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #fff; }
+    #editor-view li.selected {
+      background: #bbb;
+      border-top: 1px solid #888;
+      border-bottom: 1px solid #888; }
+    #editor-view li .image-url {
+      width: 300px; }
+    #editor-view li .coordinate {
+      width: 40px; }
+
+#phone-background {
+  float: right;
+  background-repeat: no-repeat; }
+  #phone-background.iphone4 {
+    background-image: url("../images/phones/iphone4_black.jpg");
+    width: 439px;
+    height: 824px; }
+    #phone-background.iphone4 #images-view {
+      top: 129px;
+      left: 57px;
+      width: 320px;
+      height: 480px; }
+    #phone-background.iphone4 .image-container img {
+      z-index: 1;
+      width: 320px;
+      height: 480px; }
+
+#images-view {
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair; }
+  #images-view img {
+    position: absolute;
+    left: 0; }
+  #images-view .click-zone-wrap {
+    margin-left: -25px;
+    margin-top: -25px;
+    width: 50px;
+    height: 50px;
+    z-index: 2;
+    position: absolute;
+    background: url("../images/spot.png") no-repeat center center; }
+  #images-view .click-zone {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer; }
+  #images-view .loading-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #444444 url(../images/spinner-444.gif) no-repeat center center; }
+
 .clearfix:after {
   content: ".";
   display: block;
@@ -172,86 +241,3 @@ a#target #pulse {
     background-image: url(http://1000memories.github.io/bordeaux.js/images/spot.png); }
   .export #container #images-view .loading-overlay {
     background-image: url(http://1000memories.github.io/bordeaux.js/images/spinner-444.gif); }
-
-#container {
-  position: relative;
-  padding-top: 50px; }
-  #container #editor-view-wrap {
-    width: 500px;
-    float: left;
-    margin: 0 50px; }
-  #container #phone-background {
-    float: right; }
-
-#editor-view {
-  background: #eee;
-  border: 1px solid #ccc;
-  border-bottom: none; }
-  #editor-view li {
-    position: relative;
-    padding: 12px 20px;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #fff; }
-    #editor-view li.selected {
-      background: #bbb;
-      border-top: 1px solid #888;
-      border-bottom: 1px solid #888; }
-    #editor-view li .image-url {
-      width: 300px; }
-    #editor-view li .coordinate {
-      width: 40px; }
-    #editor-view li .remove {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: block;
-      color: #999;
-      text-decoration: none;
-      font-size: 20px;
-      padding: 4px 8px; }
-      #editor-view li .remove:hover {
-        color: #555; }
-
-#images-view {
-  position: relative;
-  overflow: hidden;
-  cursor: crosshair; }
-  #images-view img {
-    position: absolute;
-    left: 0; }
-  #images-view .click-zone-wrap {
-    margin-left: -25px;
-    margin-top: -25px;
-    width: 50px;
-    height: 50px;
-    z-index: 2;
-    position: absolute;
-    background: url("../images/spot.png") no-repeat center center; }
-  #images-view .click-zone {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    cursor: pointer; }
-  #images-view .loading-overlay {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: #444444 url("../images/spinner-444.gif") no-repeat center center; }
-
-#phone-background {
-  background-repeat: no-repeat; }
-  #phone-background.iphone4 {
-    background-image: url("../images/phones/iphone4_black.jpg");
-    width: 439px;
-    height: 824px; }
-    #phone-background.iphone4 #images-view {
-      top: 129px;
-      left: 57px;
-      width: 320px;
-      height: 480px; }
-    #phone-background.iphone4 .image-container img {
-      z-index: 1;
-      width: 320px;
-      height: 480px; }

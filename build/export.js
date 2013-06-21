@@ -231,7 +231,7 @@
       var $o;
 
       $o = [];
-      $o.push("\n<html>\n  <head>\n    <title>Bordeaux.js Export</title>\n    <meta charset='utf-8'>\n    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css'>\n    <link rel='stylesheet' href='http://1000memories.github.io/bordeaux.js/build/bordeaux.css'>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>\n    <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'></script>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>\n    <script src='http://6.github.io/image_preloader.js/image_preloader.js'></script>\n    <script src='bordeaux.js'></script>\n    <style>\n      /* TODO: remove this inline CSS */\n      #container #phone-background {\n        float: none;\n        margin: 0 auto;\n      }\n    </style>\n  </head>\n  <body class='export'>\n    <div id='container'>\n      <div class='iphone4' id='phone-background'>\n        <div id='images-view'>\n          <div id='image-container'></div>\n        </div>\n      </div>\n    </div>\n    <script>\n      var json = " + (JSON.stringify(this.json)) + ";\n      Bordeaux.pageState = new Bordeaux.PageState();\n      var images = new Bordeaux.Images(json);\n      new Bordeaux.ImagesView({collection: images});\n    </script>\n  </body>\n</html>");
+      $o.push("\n<html>\n  <head>\n    <title>Bordeaux.js Export</title>\n    <meta charset='utf-8'>\n    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css'>\n    <link rel='stylesheet' href='assets/bordeaux.css'>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>\n    <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'></script>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>\n    <script src='http://6.github.io/image_preloader.js/image_preloader.js'></script>\n    <script src='assets/bordeaux.js'></script>\n  </head>\n  <body class='export'>\n    <div id='container'>\n      <div class='iphone4' id='phone-background'>\n        <div id='images-view'>\n          <div class='image-container'></div>\n        </div>\n      </div>\n    </div>\n    <script>\n      var json = " + (JSON.stringify(this.json)) + ";\n      Bordeaux.pageState = new Bordeaux.PageState({editable: false});\n      var images = new Bordeaux.Images(json);\n      new Bordeaux.ImagesView({collection: images});\n    </script>\n  </body>\n</html>");
       return $o.join("\n").replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
@@ -331,10 +331,12 @@
       this.isAnimating = false;
       this.animator = new Bordeaux.AnimatorView();
       this.preloadImages();
-      this.collection.on('change:url', this.render);
-      this.collection.on('change:animation', this.render);
-      this.collection.on('change:click', this.showClickZone);
-      return Bordeaux.pageState.on('change:selected', this.onChangeSelected);
+      if (Bordeaux.pageState.get('editable')) {
+        this.collection.on('change:url', this.render);
+        this.collection.on('change:animation', this.render);
+        this.collection.on('change:click', this.showClickZone);
+        return Bordeaux.pageState.on('change:selected', this.onChangeSelected);
+      }
     };
 
     ImagesView.prototype.currentImage = function() {
@@ -406,6 +408,9 @@
     ImagesView.prototype.updatePulseCoordinates = function(e) {
       var selectedImage, x, y;
 
+      if (!Bordeaux.pageState.get('editable')) {
+        return;
+      }
       x = e.clientX + window.scrollX - $(e.currentTarget).offset().left;
       y = e.clientY + window.scrollY - $(e.currentTarget).offset().top;
       selectedImage = Bordeaux.pageState.get('selected');
