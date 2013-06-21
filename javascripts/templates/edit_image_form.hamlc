@@ -1,6 +1,6 @@
 %li.edit-image-form{:'data-cid' => @image.cid, :class => if Bordeaux.pageState.get('selected') == @image then "selected" else ""}
   %input.image-url{:name => "url", :value => @image.get('url'), :placeholder => "Image URL", :type => "text"}
-  %a.remove{:href => "#"} X
+  %a.remove.icon.iconTrash{:href => "#"}
   %p
     %select{:name => "animation"}
       - for animation in Bordeaux.animations

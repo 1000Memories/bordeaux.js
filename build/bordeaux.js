@@ -207,7 +207,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL' type='text'>\n  <a class='remove' href='#'>X</a>\n  <p>\n    <select name='animation'>");
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL' type='text'>\n  <a class='icon iconTrash remove' href='#'></a>\n  <p>\n    <select name='animation'>");
       _ref1 = Bordeaux.animations;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         animation = _ref1[_i];
