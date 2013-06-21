@@ -612,17 +612,13 @@
     };
 
     ImagesView.prototype.initialize = function() {
-      var _this = this;
-
       this.currentImageIndex = 0;
       this.isAnimating = false;
       this.animator = new Bordeaux.AnimatorView();
       this.preloadImages();
       this.collection.on('change:url', this.render);
       this.collection.on('change:animation', this.render);
-      this.collection.each(function(model) {
-        return model.on('change:click', _this.showClickZone);
-      });
+      this.collection.on('change:click', this.showClickZone);
       return Bordeaux.pageState.on('change:selected', this.onChangeSelected);
     };
 

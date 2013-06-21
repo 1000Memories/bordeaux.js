@@ -11,8 +11,7 @@ class @Bordeaux.ImagesView extends Backbone.View
     @preloadImages()
     @collection.on('change:url', @render)
     @collection.on('change:animation', @render)
-    @collection.each (model) =>
-      model.on('change:click', @showClickZone)
+    @collection.on('change:click', @showClickZone)
     Bordeaux.pageState.on('change:selected', @onChangeSelected)
 
   currentImage: =>
