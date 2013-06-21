@@ -10,11 +10,10 @@ class @Bordeaux.ImagesView extends Backbone.View
     @isAnimating = false
     @animator = new Bordeaux.AnimatorView()
     @preloadImages()
-    if Bordeaux.pageState.get('editable')
-      @collection.on('change:url', @render)
-      @collection.on('change:animation', @render)
-      @collection.on('change:click', @showClickZone)
-      Bordeaux.pageState.on('change:selected', @onChangeSelected)
+    @collection.on('change:url', @render)
+    @collection.on('change:animation', @render)
+    @collection.on('change:click', @showClickZone)
+    Bordeaux.pageState.on('change:selected', @onChangeSelected)
 
   currentImage: =>
     @collection.models[@currentImageIndex]

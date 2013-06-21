@@ -1,3 +1,4 @@
+@import "header";
 @import "editor";
 @import "phone";
 @import "image";
@@ -5,4 +6,17 @@
 @import "flipper";
 @import "pulse";
 @import "export";
+@import "buttons";
+@import "forms";
 
+body {
+  font-family: 'Roboto', sans-serif;
+  padding-bottom: 50px;
+}
+
+#container {
+  width: 960px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 50px;
+}

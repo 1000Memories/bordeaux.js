@@ -7,10 +7,12 @@ class @Bordeaux.ExportView extends Backbone.View
     # TODO - use $.when to avoid nested callbacks
     $.ajax
       url: 'build/export.js'
+      cache: false
       error: -> alert("Error exporting (fetching JS)")
       success: (jsContent) =>
         $.ajax
           url: 'build/bordeaux.css'
+          cache: false
           error: -> alert("Error exporting (fetching CSS")
           success: (cssContent) =>
             done(jsContent, cssContent)
