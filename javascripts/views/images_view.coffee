@@ -8,6 +8,7 @@ class @Bordeaux.ImagesView extends Backbone.View
     @isAnimating = false
     @animator = new Bordeaux.Animator()
     @preloadImages(@loadImage)
+    @collection.on('reset', @onCodeChange)
 
   currentImage: =>
     @collection.models[@currentImageIndex]
@@ -36,4 +37,8 @@ class @Bordeaux.ImagesView extends Backbone.View
     #  loops back to the first image
     if @currentImageIndex == @collection.models.length
       @currentImageIndex = 0
+    @loadImage()
+
+  onCodeChange: =>
+    @$el.find('.click-zone').remove()
     @loadImage()

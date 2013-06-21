@@ -15,7 +15,10 @@
   </head>
   <body>
     <div id="container" class="clearfix">
-      <div id="editor"></div>
+      <div id="editor-view">
+        <div id="editor"></div>
+        <button class="update-code-button">Update &rarr;</button>
+      </div>
       <div id="phone-background" class="iphone4">
         <div id="images-view">
           <div class="image-container"></div>
@@ -108,15 +111,7 @@
           }
         ];
         var images = new Bordeaux.Images(json);
-
-        var editor = ace.edit("editor");
-        // editor.setTheme("ace-chrome");
-        editor.getSession().setMode("ace-json");
-        editor.getSession().setTabSize(2);
-        editor.getSession().setUseSoftTabs(true);
-        editor.setValue(JSON.stringify(json, null, '  '));
-        editor.clearSelection();
-
+        new Bordeaux.EditorView({collection: images});
         new Bordeaux.ImagesView({collection: images});
       });
     </script>
