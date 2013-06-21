@@ -6,6 +6,7 @@ class @Bordeaux.ImagesEditorView extends Backbone.View
     @collection.each (image) =>
       @views.push(new Bordeaux.ImageEditorView(model: image))
     Bordeaux.pageState.on('change:selected', @render)
+    @collection.on('change:click', @render)
 
   render: =>
     @$el.html("")

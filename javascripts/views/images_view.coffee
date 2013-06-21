@@ -2,6 +2,7 @@ class @Bordeaux.ImagesView extends Backbone.View
   el: '#images-view'
   events:
     'click .click-zone': 'onClickZoneClick'
+    'click .image-container img': 'updatePulseCoordinates'
     'click #pulse': 'onClickZoneClick'
 
   initialize: =>
@@ -56,3 +57,9 @@ class @Bordeaux.ImagesView extends Backbone.View
     if @currentImageIndex == @collection.models.length
       @currentImageIndex = 0
     Bordeaux.pageState.set('selected', @currentImage())
+
+  updatePulseCoordinates: (e) =>
+    x = e.clientX + window.scrollX - $(e.currentTarget).offset().left
+    y = e.clientY + window.scrollY - $(e.currentTarget).offset().top
+    selectedImage = Bordeaux.pageState.get('selected')
+    selectedImage.set('click', {x: x, y: y})
