@@ -576,7 +576,7 @@
       this.views.push(new Bordeaux.ImageEditorView({
         model: image
       }));
-      return this.render();
+      return Bordeaux.pageState.set('selected', image);
     };
 
     ImagesEditorView.prototype.onRemoveStep = function(model) {

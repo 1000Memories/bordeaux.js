@@ -22,7 +22,7 @@ class @Bordeaux.ImagesEditorView extends Backbone.View
     image = new Bordeaux.Image(animation: 'none', click: {x: 0, y: 0})
     @collection.add(image)
     @views.push(new Bordeaux.ImageEditorView(model: image))
-    @render()
+    Bordeaux.pageState.set('selected', image)
 
   onRemoveStep: (model) =>
     # Remove the view corresponding to the removed model (TODO: this should not work this way)
