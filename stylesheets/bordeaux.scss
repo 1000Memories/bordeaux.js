@@ -5,16 +5,16 @@
 #container {
   position: relative;
   padding-top: 50px;
-  #editor {
-    border: solid 1px;
-    bottom: 0;
+  #editor-view {
     float: left;
-    width: 500px;
-    height: 700px;
     margin: 0 50px;
+    #editor {
+      width: 500px;
+      height: 700px;
+      border: 1px solid #ccc;
+    }
   }
   #phone-background {
-    border: solid 1px;
     float: right;
   }
 }
@@ -41,7 +41,6 @@
     background: #444 url(../images/spinner-444.gif) no-repeat center center;
   }
 }
-
 
 #phone-background {
   background-repeat: no-repeat;

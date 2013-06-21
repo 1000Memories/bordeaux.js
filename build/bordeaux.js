@@ -392,10 +392,58 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  this.Bordeaux.EditorView = (function(_super) {
+    __extends(EditorView, _super);
+
+    function EditorView() {
+      this.onCodeChange = __bind(this.onCodeChange, this);
+      this.initialize = __bind(this.initialize, this);      _ref = EditorView.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    EditorView.prototype.el = '#editor-view';
+
+    EditorView.prototype.events = {
+      'click .update-code-button': 'onCodeChange'
+    };
+
+    EditorView.prototype.initialize = function() {
+      this.editor = ace.edit("editor");
+      this.editor.getSession().setMode("ace-json");
+      this.editor.getSession().setTabSize(2);
+      this.editor.getSession().setUseSoftTabs(true);
+      this.editor.setValue(JSON.stringify(this.collection.toJSON(), null, '  '));
+      return this.editor.clearSelection();
+    };
+
+    EditorView.prototype.onCodeChange = function() {
+      var e, json;
+
+      try {
+        json = JSON.parse(this.editor.getValue());
+        return this.collection.reset(json);
+      } catch (_error) {
+        e = _error;
+        return alert(e);
+      }
+    };
+
+    return EditorView;
+
+  })(Backbone.View);
+
+}).call(this);
+(function() {
+  var _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
   this.Bordeaux.ImagesView = (function(_super) {
     __extends(ImagesView, _super);
 
     function ImagesView() {
+      this.onCodeChange = __bind(this.onCodeChange, this);
       this.onClickZoneClick = __bind(this.onClickZoneClick, this);
       this.onDoneAnimating = __bind(this.onDoneAnimating, this);
       this.loadImage = __bind(this.loadImage, this);
@@ -415,7 +463,8 @@
       this.currentImageIndex = 0;
       this.isAnimating = false;
       this.animator = new Bordeaux.Animator();
-      return this.preloadImages(this.loadImage);
+      this.preloadImages(this.loadImage);
+      return this.collection.on('reset', this.onCodeChange);
     };
 
     ImagesView.prototype.currentImage = function() {
@@ -460,6 +509,11 @@
       if (this.currentImageIndex === this.collection.models.length) {
         this.currentImageIndex = 0;
       }
+      return this.loadImage();
+    };
+
+    ImagesView.prototype.onCodeChange = function() {
+      this.$el.find('.click-zone').remove();
       return this.loadImage();
     };
 
