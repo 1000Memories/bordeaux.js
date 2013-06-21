@@ -253,7 +253,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt='image'>");
+      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt=''>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '');
     }).call(window.HAML.context(context));
   };

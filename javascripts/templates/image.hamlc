@@ -1,1 +1,1 @@
-%img{:src => @image.get('url'), :alt => "image"}
+%img{:src => @image.get('url'), :alt => ""}
