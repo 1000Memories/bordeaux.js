@@ -1,3 +1,20 @@
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+.clearfix {
+  display: inline-block; }
+
+html[xmlns] .clearfix {
+  display: block; }
+
+* html .clearfix {
+  height: 1%; }
+
 .flip-container {
   position: absolute;
   top: 0;
@@ -42,6 +59,20 @@
     -moz-transform: rotateY(180deg);
     transform: rotateY(180deg); }
 
+#container {
+  position: relative;
+  padding-top: 50px; }
+  #container #editor {
+    border: solid 1px;
+    bottom: 0;
+    float: left;
+    width: 500px;
+    height: 700px;
+    margin: 0 50px; }
+  #container #phone-background {
+    border: solid 1px;
+    float: right; }
+
 #images-view {
   position: relative;
   overflow: hidden; }
@@ -63,8 +94,7 @@
     background: #444444 url(../images/spinner-444.gif) no-repeat center center; }
 
 #phone-background {
-  background-repeat: no-repeat;
-  margin: 50px auto; }
+  background-repeat: no-repeat; }
   #phone-background.iphone4 {
     background-image: url("../images/phones/iphone4_black.jpg");
     width: 439px;

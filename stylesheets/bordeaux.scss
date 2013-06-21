@@ -1,4 +1,22 @@
+@import "clearfix";
 @import "flipper";
+
+#container {
+  position: relative;
+  padding-top: 50px;
+  #editor {
+    border: solid 1px;
+    bottom: 0;
+    float: left;
+    width: 500px;
+    height: 700px;
+    margin: 0 50px;
+  }
+  #phone-background {
+    border: solid 1px;
+    float: right;
+  }
+}
 
 #images-view {
   position: relative;
@@ -27,7 +45,6 @@
 
 #phone-background {
   background-repeat: no-repeat;
-  margin: 50px auto;
   &.iphone4 {
     $screen-width: 320px;
     $screen-height: 480px;
