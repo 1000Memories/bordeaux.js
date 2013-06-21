@@ -108,12 +108,16 @@
           }
         ];
         var images = new Bordeaux.Images(json);
-        new Bordeaux.ImagesView({collection: images});
 
         var editor = ace.edit("editor");
-        editor.setTheme("ace-chrome");
+        // editor.setTheme("ace-chrome");
         editor.getSession().setMode("ace-json");
+        editor.getSession().setTabSize(2);
+        editor.getSession().setUseSoftTabs(true);
         editor.setValue(JSON.stringify(json, null, '  '));
+        editor.clearSelection();
+
+        new Bordeaux.ImagesView({collection: images});
       });
     </script>
 
