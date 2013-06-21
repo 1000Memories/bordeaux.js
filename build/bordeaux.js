@@ -663,7 +663,6 @@
     };
 
     ImagesView.prototype.onClickZoneClick = function() {
-      console.log("CLICK");
       if (this.isAnimating) {
         return;
       }
