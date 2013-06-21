@@ -5,10 +5,7 @@
 #container {
   position: relative;
   padding-top: 50px;
-  #editor-view {
-    background: #eee;
-    border: 1px solid #ccc;
-    border-bottom: none;
+  #editor-view-wrap {
     width: 500px;
     float: left;
     margin: 0 50px;
@@ -19,7 +16,11 @@
 }
 
 #editor-view {
+  background: #eee;
+  border: 1px solid #ccc;
+  border-bottom: none;
   li {
+    position: relative;
     padding: 12px 20px;
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #fff;
@@ -33,6 +34,19 @@
     }
     .coordinate {
       width: 40px;
+    }
+    .remove {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      color: #999;
+      text-decoration: none;
+      font-size: 20px;
+      padding: 4px 8px;
+      &:hover {
+        color: #555;
+      }
     }
   }
 }
