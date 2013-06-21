@@ -174,6 +174,128 @@
 
 }).call(this);
 (function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['click_zone'] = function(context) {
+    return (function() {
+      var $c, $e, $o;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<a class='click-zone-wrap' id='target' href='#' style='top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <div id='pulse'></div>\n  <div class='click-zone'></div>\n</a>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['edit_image_form'] = function(context) {
+    return (function() {
+      var $c, $e, $o, animation, _i, _len, _ref1;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <a class='remove' href='#'>&times;</a>\n  <p>\n    <select name='animation'>");
+      _ref1 = Bordeaux.animations;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        animation = _ref1[_i];
+        $o.push("      <option class='animation' value='" + ($e($c(animation))) + "' selected='" + ($e($c(this.image.get('animation') === animation))) + "'>" + ($e($c(animation))) + "</option>");
+      }
+      $o.push("    </select>\n    <input class='coordinate' name='x' value='" + ($e($c(this.image.get('click').x))) + "' placeholder='X'>\n    <input class='coordinate' name='y' value='" + ($e($c(this.image.get('click').y))) + "' placeholder='Y'>\n  </p>\n</li>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['exported_view'] = function(context) {
+    return (function() {
+      var $o;
+
+      $o = [];
+      $o.push("\n<html>\n  <head>\n    <title>Bordeaux.js Export</title>\n    <meta charset='utf-8'>\n    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css'>\n    <link rel='stylesheet' href='http://1000memories.github.io/bordeaux.js/build/bordeaux.css'>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>\n    <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'></script>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>\n    <script src='http://6.github.io/image_preloader.js/image_preloader.js'></script>\n    <script src='bordeaux.js'></script>\n    <style>\n      /* TODO: remove this inline CSS */\n      #container #phone-background {\n        float: none;\n        margin: 0 auto;\n      }\n    </style>\n  </head>\n  <body class='export'>\n    <div id='container'>\n      <div class='iphone4' id='phone-background'>\n        <div id='images-view'>\n          <div id='image-container'></div>\n        </div>\n      </div>\n    </div>\n    <script>\n      var json = " + (JSON.stringify(this.json)) + ";\n      Bordeaux.pageState = new Bordeaux.PageState();\n      var images = new Bordeaux.Images(json);\n      new Bordeaux.ImagesView({collection: images});\n    </script>\n  </body>\n</html>");
+      return $o.join("\n").replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['flip'] = function(context) {
+    return (function() {
+      var $c, $e, $o;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<div class='flip-container'>\n  <div class='flipper'>\n    <div class='front'>\n      <img src='" + ($e($c(this.frontImageUrl))) + "'>\n    </div>\n    <div class='back'>\n      <img src='" + ($e($c(this.backImageUrl))) + "'>\n    </div>\n  </div>\n</div>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['image'] = function(context) {
+    return (function() {
+      var $c, $e, $o;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<img src='" + ($e($c(this.image.get('url')))) + "' alt=''>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '');
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['loading'] = function(context) {
+    return (function() {
+      var $o;
+
+      $o = [];
+      $o.push("<div class='loading-overlay'></div>");
+      return $o.join("\n").replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
   var _ref,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,

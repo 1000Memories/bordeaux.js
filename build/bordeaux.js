@@ -454,7 +454,7 @@
       var _this = this;
 
       return $.ajax({
-        url: 'build/bordeaux.js',
+        url: 'build/export.js',
         error: function() {
           return alert("Error exporting (fetching JS)");
         },

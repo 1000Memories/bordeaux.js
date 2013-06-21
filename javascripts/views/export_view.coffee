@@ -6,7 +6,7 @@ class @Bordeaux.ExportView extends Backbone.View
   fetchJsAndCss: (done) =>
     # TODO - use $.when to avoid nested callbacks
     $.ajax
-      url: 'build/bordeaux.js'
+      url: 'build/export.js'
       error: -> alert("Error exporting (fetching JS)")
       success: (jsContent) =>
         $.ajax
