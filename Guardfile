@@ -5,6 +5,8 @@ guard :shell do
     path = m[0]
     asset_type = if %r{^(javascripts)/.+$}.match path
       "javascripts"
+    elsif %r{^(export)/.+$}.match path
+      "export"
     elsif %r{^(stylesheets)/.+scss$}.match path
       "stylesheets"
     end

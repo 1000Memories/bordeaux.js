@@ -9,6 +9,7 @@
     <script src="vendor/jquery.js"></script>
     <script src="vendor/backbone.js"></script>
     <script src="vendor/image_preloader.js"></script>
+    <script src="vendor/jszip.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="http://c.mfcreative.com/css/v1/icon.css" rel="stylesheet" />
     <script src="vendor/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -36,6 +37,7 @@
       <div id="editor-view-wrap">
         <ol id="editor-view"></ol>
         <button class='add-step'>Add a step</button>
+        <button class='export'>Export</button>
       </div>
       <div id="phone-background" class="iphone4">
         <div id="images-view">
@@ -48,7 +50,7 @@
       $(function() {
         var json = [
           {
-            url: 'images/screenshots/1.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/1.png',
             animation: 'flip',
             click: {
               x: 215,
@@ -56,7 +58,7 @@
             }
           },
           {
-            url: 'images/screenshots/2.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/2.png',
             animation: 'fadeIn',
             click: {
               x: 300,
@@ -64,7 +66,7 @@
             }
           },
           {
-            url: 'images/screenshots/3.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/3.png',
             animation: 'slideToTop',
             click: {
               x: 150,
@@ -72,7 +74,7 @@
             }
           },
           {
-            url: 'images/screenshots/4.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/4.png',
             animation: 'slideToLeft',
             click: {
               x: 120,
@@ -80,7 +82,7 @@
             }
           },
           {
-            url: 'images/screenshots/5.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/5.png',
             animation: 'none',
             click: {
               x: 300,
@@ -88,7 +90,7 @@
             }
           },
           {
-            url: 'images/screenshots/6.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/6.png',
             animation: 'revealFromTop',
             click: {
               x: 310,
@@ -96,7 +98,7 @@
             }
           },
           {
-            url: 'images/screenshots/7.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/7.png',
             animation: 'fadeIn',
             click: {
               x: 131,
@@ -104,7 +106,7 @@
             }
           },
           {
-            url: 'images/screenshots/8.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/8.png',
             animation: 'none',
             click: {
               x: 300,
@@ -112,7 +114,7 @@
             }
           },
           {
-            url: 'images/screenshots/9.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/9.png',
             animation: 'fadeIn',
             click: {
               x: 300,
@@ -120,7 +122,7 @@
             }
           },
           {
-            url: 'images/screenshots/10.png',
+            url: 'http://1000memories.github.io/bordeaux.js/images/screenshots/10.png',
             animation: 'fadeIn',
             click: {
               x: 300,
@@ -128,10 +130,11 @@
             }
           }
         ];
-        Bordeaux.pageState = new Bordeaux.PageState();
+        Bordeaux.pageState = new Bordeaux.PageState({editable: true});
         var images = new Bordeaux.Images(json);
         new Bordeaux.ImagesEditorView({collection: images});
         new Bordeaux.ImagesView({collection: images});
+        new Bordeaux.ExportView({collection: images});
       });
     </script>
 

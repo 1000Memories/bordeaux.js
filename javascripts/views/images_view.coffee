@@ -58,6 +58,7 @@ class @Bordeaux.ImagesView extends Backbone.View
     Bordeaux.pageState.set('selected', @currentImage())
 
   updatePulseCoordinates: (e) =>
+    return  unless Bordeaux.pageState.get('editable')
     x = e.clientX + window.scrollX - $(e.currentTarget).offset().left
     y = e.clientY + window.scrollY - $(e.currentTarget).offset().top
     selectedImage = Bordeaux.pageState.get('selected')

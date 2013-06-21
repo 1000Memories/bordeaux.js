@@ -3,7 +3,7 @@ namespace :assets do
   require './lib/sprockets_environment_builder'
 
   task :compile_all do
-    %w{javascripts stylesheets}.each do |asset|
+    %w{javascripts export stylesheets}.each do |asset|
       Rake::Task["assets:compile_#{asset}"].invoke
     end
     puts "Finished asset precompilation"
@@ -12,6 +12,11 @@ namespace :assets do
   task :compile_javascripts do
     compile_asset('build', 'bordeaux.js', :development)
     `terminal-notifier-success -message "Compiled bordeaux.js"`
+  end
+
+  task :compile_export do
+    compile_asset('build', 'export.js', :development)
+    `terminal-notifier-success -message "Compiled export.js"`
   end
 
   task :compile_stylesheets do
