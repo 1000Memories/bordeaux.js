@@ -161,6 +161,18 @@ a#target #pulse {
     transform: scale(2.5);
     opacity: 0; } }
 
+.export #container #phone-background {
+  float: none;
+  margin: 0 auto; }
+  .export #container #phone-background.iphone4 {
+    background-image: url(http://1000memories.github.io/bordeaux.js/images/phones/iphone4_black.jpg); }
+.export #container #images-view {
+  cursor: default; }
+  .export #container #images-view .click-zone-wrap {
+    background-image: url(http://1000memories.github.io/bordeaux.js/images/spot.png); }
+  .export #container #images-view .loading-overlay {
+    background-image: url(http://1000memories.github.io/bordeaux.js/images/spinner-444.gif); }
+
 #container {
   position: relative;
   padding-top: 50px; }
@@ -226,7 +238,7 @@ a#target #pulse {
     top: 0;
     right: 0;
     bottom: 0;
-    background: #444444 url(../images/spinner-444.gif) no-repeat center center; }
+    background: #444444 url("../images/spinner-444.gif") no-repeat center center; }
 
 #phone-background {
   background-repeat: no-repeat; }

@@ -1,0 +1,22 @@
+// Export view overrides (TODO: we should separate CSS better so overrides are unneeded)
+// TODO - figure out a way to export images
+.export {
+  #container {
+    #phone-background {
+      float: none;
+      margin: 0 auto;
+      &.iphone4 {
+        background-image: url(http://1000memories.github.io/bordeaux.js/images/phones/iphone4_black.jpg);
+      }
+    }
+    #images-view {
+      cursor: default;
+      .click-zone-wrap {
+        background-image: url(http://1000memories.github.io/bordeaux.js/images/spot.png);
+      }
+      .loading-overlay {
+        background-image: url(http://1000memories.github.io/bordeaux.js/images/spinner-444.gif);
+      }
+    }
+  }
+}

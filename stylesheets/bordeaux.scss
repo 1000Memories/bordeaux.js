@@ -1,6 +1,11 @@
 @import "clearfix";
 @import "flipper";
 @import "pulse";
+@import "export";
+
+$image-spot: "../images/spot.png";
+$image-spinner: "../images/spinner-444.gif";
+$image-iphone4: "../images/phones/iphone4_black.jpg";
 
 #container {
   position: relative;
@@ -66,7 +71,7 @@
     height: 50px;
     z-index: 2;
     position: absolute;
-    background: url('../images/spot.png') no-repeat center center;
+    background: url($image-spot) no-repeat center center;
   }
   .click-zone {
     position: relative; // position: relative to always go over the "pulse" animation
@@ -80,7 +85,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background: #444 url(../images/spinner-444.gif) no-repeat center center;
+    background: #444 url($image-spinner) no-repeat center center;
   }
 }
 
@@ -89,7 +94,7 @@
   &.iphone4 {
     $screen-width: 320px;
     $screen-height: 480px;
-    background-image: url('../images/phones/iphone4_black.jpg');
+    background-image: url($image-iphone4);
     width: 439px;
     height: 824px;
     #images-view {

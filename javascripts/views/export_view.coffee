@@ -20,9 +20,9 @@ class @Bordeaux.ExportView extends Backbone.View
     zip = new JSZip()
     folder = zip.folder('bordeaux')
     folder.file('index.html', html)
+    assets = folder.folder("assets")
     @fetchJsAndCss (jsContent, cssContent) =>
-      console.log cssContent
-      folder.file('bordeaux.js', jsContent)
-      folder.file('bordeaux.css', cssContent)
+      assets.file('bordeaux.js', jsContent)
+      assets.file('bordeaux.css', cssContent)
       content = zip.generate()
       location.href = "data:application/zip;base64,"+content

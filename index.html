@@ -110,7 +110,7 @@
             }
           }
         ];
-        Bordeaux.pageState = new Bordeaux.PageState();
+        Bordeaux.pageState = new Bordeaux.PageState({editable: true});
         var images = new Bordeaux.Images(json);
         new Bordeaux.ImagesEditorView({collection: images});
         new Bordeaux.ImagesView({collection: images});
