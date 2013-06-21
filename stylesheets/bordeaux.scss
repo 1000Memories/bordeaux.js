@@ -44,12 +44,18 @@
     position: absolute;
     left: 0;
   }
-  .click-zone {
-    cursor: pointer;
+  .click-zone-wrap {
     width: 50px;
     height: 50px;
     z-index: 2;
+    position: absolute;
     background: url('../images/spot.png') no-repeat center center;
+  }
+  .click-zone {
+    position: relative; // position: relative to always go over the "pulse" animation
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
   .loading-overlay {
     position: absolute;
