@@ -188,7 +188,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<div class='click-zone' style='position: absolute; top: " + ($e($c(this.image.get('click').x))) + "px; left: " + ($e($c(this.image.get('click').y))) + "px'></div>");
+      $o.push("<a class='click-zone' id='target' href='#' style='position: absolute; top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <img class='indicator' src='images/spot.png'>\n  <div id='pulse'></div>\n</a>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
