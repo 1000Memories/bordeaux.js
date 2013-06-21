@@ -1,0 +1,30 @@
+!!!5
+%html
+  %head
+    %title Bordeaux.js Export
+    %meta{:charset => "utf-8"}
+    %link{:rel => "stylesheet", :href => "http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css"}
+    %link{:rel => "stylesheet", :href => "http://1000memories.github.io/bordeaux.js/build/bordeaux.css"}
+    %script{:src => "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"}
+    %script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"}
+    %script{:src => "http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"}
+    %script{:src => "http://6.github.io/image_preloader.js/image_preloader.js"}
+    %script{:src => "bordeaux.js"}
+    :css
+      /* TODO: remove this inline CSS */
+      #container #phone-background {
+        float: none;
+        margin: 0 auto;
+      }
+
+  %body.export
+    #container
+      #phone-background.iphone4
+        #images-view
+          #image-container
+
+    :javascript
+      var json = #{JSON.stringify(@json)};
+      Bordeaux.pageState = new Bordeaux.PageState();
+      var images = new Bordeaux.Images(json);
+      new Bordeaux.ImagesView({collection: images});

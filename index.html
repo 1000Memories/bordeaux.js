@@ -9,8 +9,7 @@
     <script src="vendor/jquery.js"></script>
     <script src="vendor/backbone.js"></script>
     <script src="vendor/image_preloader.js"></script>
-
-    <script src="vendor/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="vendor/jszip.js"></script>
     <script src="build/bordeaux.js"></script>
   </head>
   <body>
@@ -18,6 +17,7 @@
       <div id="editor-view-wrap">
         <ol id="editor-view"></ol>
         <button class='add-step'>Add a step</button>
+        <button class='export'>Export</button>
       </div>
       <div id="phone-background" class="iphone4">
         <div id="images-view">
@@ -114,6 +114,7 @@
         var images = new Bordeaux.Images(json);
         new Bordeaux.ImagesEditorView({collection: images});
         new Bordeaux.ImagesView({collection: images});
+        new Bordeaux.ExportView({collection: images});
       });
     </script>
 

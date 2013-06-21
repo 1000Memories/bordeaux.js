@@ -226,6 +226,24 @@
     window.JST = {};
   }
 
+  window.JST['exported_view'] = function(context) {
+    return (function() {
+      var $o;
+
+      $o = [];
+      $o.push("\n<html>\n  <head>\n    <title>Bordeaux.js Export</title>\n    <meta charset='utf-8'>\n    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css'>\n    <link rel='stylesheet' href='http://1000memories.github.io/bordeaux.js/build/bordeaux.css'>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>\n    <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'></script>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>\n    <script src='http://6.github.io/image_preloader.js/image_preloader.js'></script>\n    <script src='bordeaux.js'></script>\n    <style>\n      /* TODO: remove this inline CSS */\n      #container #phone-background {\n        float: none;\n        margin: 0 auto;\n      }\n    </style>\n  </head>\n  <body class='export'>\n    <div id='container'>\n      <div class='iphone4' id='phone-background'>\n        <div id='images-view'>\n          <div id='image-container'></div>\n        </div>\n      </div>\n    </div>\n    <script>\n      var json = " + (JSON.stringify(this.json)) + ";\n      Bordeaux.pageState = new Bordeaux.PageState();\n      var images = new Bordeaux.Images(json);\n      new Bordeaux.ImagesView({collection: images});\n    </script>\n  </body>\n</html>");
+      return $o.join("\n").replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
   window.JST['flip'] = function(context) {
     return (function() {
       var $c, $e, $o;
@@ -407,6 +425,75 @@
     };
 
     return AnimatorView;
+
+  })(Backbone.View);
+
+}).call(this);
+(function() {
+  var _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  this.Bordeaux.ExportView = (function(_super) {
+    __extends(ExportView, _super);
+
+    function ExportView() {
+      this["export"] = __bind(this["export"], this);
+      this.fetchJsAndCss = __bind(this.fetchJsAndCss, this);      _ref = ExportView.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    ExportView.prototype.el = '.export';
+
+    ExportView.prototype.events = {
+      'click': 'export'
+    };
+
+    ExportView.prototype.fetchJsAndCss = function(done) {
+      var _this = this;
+
+      return $.ajax({
+        url: 'build/bordeaux.js',
+        error: function() {
+          return alert("Error exporting (fetching JS)");
+        },
+        success: function(jsContent) {
+          return $.ajax({
+            url: 'build/bordeaux.css',
+            error: function() {
+              return alert("Error exporting (fetching CSS");
+            },
+            success: function(cssContent) {
+              return done(jsContent, cssContent);
+            }
+          });
+        }
+      });
+    };
+
+    ExportView.prototype["export"] = function() {
+      var folder, html, zip,
+        _this = this;
+
+      html = JST['exported_view']({
+        json: this.collection.toJSON()
+      });
+      zip = new JSZip();
+      folder = zip.folder('bordeaux');
+      folder.file('index.html', html);
+      return this.fetchJsAndCss(function(jsContent, cssContent) {
+        var content;
+
+        console.log(cssContent);
+        folder.file('bordeaux.js', jsContent);
+        folder.file('bordeaux.css', cssContent);
+        content = zip.generate();
+        return location.href = "data:application/zip;base64," + content;
+      });
+    };
+
+    return ExportView;
 
   })(Backbone.View);
 
