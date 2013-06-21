@@ -202,11 +202,14 @@ a#target #pulse {
 
 #images-view {
   position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  cursor: crosshair; }
   #images-view img {
     position: absolute;
     left: 0; }
   #images-view .click-zone-wrap {
+    margin-left: -25px;
+    margin-top: -25px;
     width: 50px;
     height: 50px;
     z-index: 2;

@@ -545,7 +545,8 @@
       });
       Bordeaux.pageState.on('change:selected', this.render);
       this.collection.on('add', this.render);
-      return this.collection.on('remove', this.onRemoveStep);
+      this.collection.on('remove', this.onRemoveStep);
+      return this.collection.on('change:click', this.render);
     };
 
     ImagesEditorView.prototype.render = function() {
@@ -612,6 +613,7 @@
     __extends(ImagesView, _super);
 
     function ImagesView() {
+      this.updatePulseCoordinates = __bind(this.updatePulseCoordinates, this);
       this.onClickZoneClick = __bind(this.onClickZoneClick, this);
       this.removeClickZone = __bind(this.removeClickZone, this);
       this.showClickZone = __bind(this.showClickZone, this);
@@ -628,6 +630,7 @@
 
     ImagesView.prototype.events = {
       'click .click-zone': 'onClickZoneClick',
+      'click .image-container img': 'updatePulseCoordinates',
       'click #pulse': 'onClickZoneClick'
     };
 
@@ -706,6 +709,18 @@
         this.currentImageIndex = 0;
       }
       return Bordeaux.pageState.set('selected', this.currentImage());
+    };
+
+    ImagesView.prototype.updatePulseCoordinates = function(e) {
+      var selectedImage, x, y;
+
+      x = e.clientX + window.scrollX - $(e.currentTarget).offset().left;
+      y = e.clientY + window.scrollY - $(e.currentTarget).offset().top;
+      selectedImage = Bordeaux.pageState.get('selected');
+      return selectedImage.set('click', {
+        x: x,
+        y: y
+      });
     };
 
     return ImagesView;

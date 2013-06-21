@@ -11,6 +11,7 @@ class @Bordeaux.ImagesEditorView extends Backbone.View
     Bordeaux.pageState.on('change:selected', @render)
     @collection.on('add', @render)
     @collection.on('remove', @onRemoveStep)
+    @collection.on('change:click', @render)
 
   render: =>
     @$steps.html("")
