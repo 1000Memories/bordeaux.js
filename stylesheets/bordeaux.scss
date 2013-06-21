@@ -5,7 +5,7 @@
   position: relative;
   padding-top: 50px;
   #editor {
-    border: solid 1px;
+    border: 1px solid #ccc;
     bottom: 0;
     float: left;
     width: 500px;
@@ -13,7 +13,6 @@
     margin: 0 50px;
   }
   #phone-background {
-    border: solid 1px;
     float: right;
   }
 }
@@ -41,7 +40,6 @@
     background: #444 url(../images/spinner-444.gif) no-repeat center center;
   }
 }
-
 
 #phone-background {
   background-repeat: no-repeat;

@@ -63,14 +63,13 @@ html[xmlns] .clearfix {
   position: relative;
   padding-top: 50px; }
   #container #editor {
-    border: solid 1px;
+    border: 1px solid #ccc;
     bottom: 0;
     float: left;
     width: 500px;
     height: 700px;
     margin: 0 50px; }
   #container #phone-background {
-    border: solid 1px;
     float: right; }
 
 #images-view {
