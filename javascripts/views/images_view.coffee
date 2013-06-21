@@ -2,6 +2,7 @@ class @Bordeaux.ImagesView extends Backbone.View
   el: '#images-view'
   events:
     'click .click-zone': 'onClickZoneClick'
+    'click #pulse': 'onClickZoneClick'
 
   initialize: =>
     @currentImageIndex = 0
@@ -44,9 +45,10 @@ class @Bordeaux.ImagesView extends Backbone.View
     @$el.append(JST['click_zone'](image: @currentImage()))
 
   removeClickZone: (fadeOutDuration = 0) =>
-    @$el.find('.click-zone').fadeOut(fadeOutDuration, -> @remove())
+    @$el.find('.click-zone-wrap').fadeOut(fadeOutDuration, -> @remove())
 
   onClickZoneClick: =>
+    console.log "CLICK"
     return  if @isAnimating
     @removeClickZone(100)
     @isAnimating = true

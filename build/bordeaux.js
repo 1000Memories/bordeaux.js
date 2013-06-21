@@ -206,7 +206,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<a class='click-zone' id='target' href='#' style='position: absolute; top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <div id='pulse'></div>\n</a>");
+      $o.push("<a class='click-zone-wrap' id='target' href='#' style='top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <div id='pulse'></div>\n  <div class='click-zone'></div>\n</a>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
@@ -590,7 +590,8 @@
     ImagesView.prototype.el = '#images-view';
 
     ImagesView.prototype.events = {
-      'click .click-zone': 'onClickZoneClick'
+      'click .click-zone': 'onClickZoneClick',
+      'click #pulse': 'onClickZoneClick'
     };
 
     ImagesView.prototype.initialize = function() {
@@ -656,12 +657,13 @@
       if (fadeOutDuration == null) {
         fadeOutDuration = 0;
       }
-      return this.$el.find('.click-zone').fadeOut(fadeOutDuration, function() {
+      return this.$el.find('.click-zone-wrap').fadeOut(fadeOutDuration, function() {
         return this.remove();
       });
     };
 
     ImagesView.prototype.onClickZoneClick = function() {
+      console.log("CLICK");
       if (this.isAnimating) {
         return;
       }
