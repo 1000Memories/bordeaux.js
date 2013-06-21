@@ -5,10 +5,7 @@
 #container {
   position: relative;
   padding-top: 50px;
-  #editor-view {
-    background: #eee;
-    border: 1px solid #ccc;
-    border-bottom: none;
+  #editor-view-wrap {
     width: 500px;
     float: left;
     margin: 0 50px;
@@ -19,6 +16,9 @@
 }
 
 #editor-view {
+  background: #eee;
+  border: 1px solid #ccc;
+  border-bottom: none;
   li {
     padding: 12px 20px;
     border-bottom: 1px solid #ccc;

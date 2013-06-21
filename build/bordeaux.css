@@ -164,28 +164,29 @@ a#target #pulse {
 #container {
   position: relative;
   padding-top: 50px; }
-  #container #editor-view {
-    background: #eee;
-    border: 1px solid #ccc;
-    border-bottom: none;
+  #container #editor-view-wrap {
     width: 500px;
     float: left;
     margin: 0 50px; }
   #container #phone-background {
     float: right; }
 
-#editor-view li {
-  padding: 12px 20px;
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #fff; }
-  #editor-view li.selected {
-    background: #bbb;
-    border-top: 1px solid #888;
-    border-bottom: 1px solid #888; }
-  #editor-view li .image-url {
-    width: 300px; }
-  #editor-view li .coordinate {
-    width: 40px; }
+#editor-view {
+  background: #eee;
+  border: 1px solid #ccc;
+  border-bottom: none; }
+  #editor-view li {
+    padding: 12px 20px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #fff; }
+    #editor-view li.selected {
+      background: #bbb;
+      border-top: 1px solid #888;
+      border-bottom: 1px solid #888; }
+    #editor-view li .image-url {
+      width: 300px; }
+    #editor-view li .coordinate {
+      width: 40px; }
 
 #images-view {
   position: relative;

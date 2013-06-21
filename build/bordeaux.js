@@ -107,47 +107,16 @@
 }).call(this);
 (function() {
   var _ref,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   this.Bordeaux.Image = (function(_super) {
     __extends(Image, _super);
 
     function Image() {
-      this.hasValidClickZone = __bind(this.hasValidClickZone, this);
-      this.hasValidAnimation = __bind(this.hasValidAnimation, this);
-      this.hasValidUrl = __bind(this.hasValidUrl, this);
-      this.initialize = __bind(this.initialize, this);      _ref = Image.__super__.constructor.apply(this, arguments);
+      _ref = Image.__super__.constructor.apply(this, arguments);
       return _ref;
     }
-
-    Image.prototype.initialize = function() {
-      if (!this.hasValidAnimation()) {
-        throw new Error("Invalid animation '" + (this.get('animation')) + "'");
-      }
-      if (!this.hasValidUrl()) {
-        throw new Error("Invalid URL '" + (this.get('url')) + "'");
-      }
-      if (!this.hasValidClickZone()) {
-        throw new Error("Invalid click zone");
-      }
-    };
-
-    Image.prototype.hasValidUrl = function() {
-      return (this.get('url') != null) && this.get('url').length > 0;
-    };
-
-    Image.prototype.hasValidAnimation = function() {
-      var _ref1;
-
-      return _ref1 = this.get('animation'), __indexOf.call(Bordeaux.animations, _ref1) >= 0;
-    };
-
-    Image.prototype.hasValidClickZone = function() {
-      return this.get('click') && this.get('click').x && this.get('click').y && this.get('click').x > 0 && this.get('click').x < 320 && this.get('click').y > 0 && this.get('click').y < 480;
-    };
 
     return Image;
 
@@ -535,16 +504,22 @@
 
     function ImagesEditorView() {
       this.onRemoveStep = __bind(this.onRemoveStep, this);
+      this.onClickAddStep = __bind(this.onClickAddStep, this);
       this.render = __bind(this.render, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesEditorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    ImagesEditorView.prototype.el = '#editor-view';
+    ImagesEditorView.prototype.el = '#editor-view-wrap';
+
+    ImagesEditorView.prototype.events = {
+      'click .add-step': 'onClickAddStep'
+    };
 
     ImagesEditorView.prototype.initialize = function() {
       var _this = this;
 
+      this.$steps = $("#editor-view");
       this.views = [];
       this.collection.each(function(image) {
         return _this.views.push(new Bordeaux.ImageEditorView({
@@ -552,21 +527,39 @@
         }));
       });
       Bordeaux.pageState.on('change:selected', this.render);
+      this.collection.on('add', this.render);
       return this.collection.on('remove', this.onRemoveStep);
     };
 
     ImagesEditorView.prototype.render = function() {
       var view, _i, _len, _ref1, _results;
 
-      this.$el.html("");
+      this.$steps.html("");
       _ref1 = this.views;
       _results = [];
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         view = _ref1[_i];
-        this.$el.append(view.html());
+        this.$steps.append(view.html());
         _results.push(view.bindEvents());
       }
       return _results;
+    };
+
+    ImagesEditorView.prototype.onClickAddStep = function() {
+      var image;
+
+      image = new Bordeaux.Image({
+        animation: 'none',
+        click: {
+          x: 0,
+          y: 0
+        }
+      });
+      this.collection.add(image);
+      this.views.push(new Bordeaux.ImageEditorView({
+        model: image
+      }));
+      return this.render();
     };
 
     ImagesEditorView.prototype.onRemoveStep = function(model) {
