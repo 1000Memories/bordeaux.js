@@ -23,6 +23,11 @@
     padding: 12px 20px;
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #fff;
+    &.selected {
+      background: #bbb;
+      border-top: 1px solid #888;
+      border-bottom: 1px solid #888;
+    }
     .image-url {
       width: 300px;
     }

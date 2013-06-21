@@ -159,6 +159,24 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  this.Bordeaux.PageState = (function(_super) {
+    __extends(PageState, _super);
+
+    function PageState() {
+      _ref = PageState.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    return PageState;
+
+  })(Backbone.Model);
+
+}).call(this);
+(function() {
+  var _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
   this.Bordeaux.Images = (function(_super) {
     __extends(Images, _super);
 
@@ -208,7 +226,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<li class='edit-image-form' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <p>\n    <select name='animation'>");
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <p>\n    <select name='animation'>");
       _ref1 = Bordeaux.animations;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         animation = _ref1[_i];
@@ -322,7 +340,7 @@
       var _this = this;
 
       return this.$currentImage().fadeOut(100, function() {
-        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(100, done);
+        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(150, done);
       });
     };
 
@@ -424,7 +442,8 @@
     function ImageEditorView() {
       this.bindEvents = __bind(this.bindEvents, this);
       this.$form = __bind(this.$form, this);
-      this.render = __bind(this.render, this);
+      this.html = __bind(this.html, this);
+      this.onClickForm = __bind(this.onClickForm, this);
       this.onChangeAnimation = __bind(this.onChangeAnimation, this);
       this.onChangeY = __bind(this.onChangeY, this);
       this.onChangeX = __bind(this.onChangeX, this);
@@ -466,7 +485,11 @@
       return this.model.set('animation', value);
     };
 
-    ImageEditorView.prototype.render = function() {
+    ImageEditorView.prototype.onClickForm = function(e) {
+      return Bordeaux.pageState.set('selected', this.model);
+    };
+
+    ImageEditorView.prototype.html = function() {
       return JST['edit_image_form']({
         image: this.model
       });
@@ -477,10 +500,16 @@
     };
 
     ImageEditorView.prototype.bindEvents = function() {
+      var _this = this;
+
       this.$form().on('keyup', '[name=url]', this.onChangeUrl);
       this.$form().on('keyup', '[name=x]', this.onChangeX);
       this.$form().on('keyup', '[name=y]', this.onChangeY);
-      return this.$form().on('change', '[name=animation]', this.onChangeAnimation);
+      this.$form().on('change', '[name=animation]', function(e) {
+        _this.onClickForm(e);
+        return _this.onChangeAnimation(e);
+      });
+      return this.$form().on('click', this.onClickForm);
     };
 
     return ImageEditorView;
@@ -514,7 +543,7 @@
           model: image
         }));
       });
-      return this.render();
+      return Bordeaux.pageState.on('change:selected', this.render);
     };
 
     ImagesEditorView.prototype.render = function() {
@@ -525,7 +554,7 @@
       _results = [];
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         view = _ref1[_i];
-        this.$el.append(view.render());
+        this.$el.append(view.html());
         _results.push(view.bindEvents());
       }
       return _results;
@@ -546,10 +575,12 @@
     __extends(ImagesView, _super);
 
     function ImagesView() {
-      this.onCodeChange = __bind(this.onCodeChange, this);
       this.onClickZoneClick = __bind(this.onClickZoneClick, this);
+      this.removeClickZone = __bind(this.removeClickZone, this);
+      this.showClickZone = __bind(this.showClickZone, this);
       this.onDoneAnimating = __bind(this.onDoneAnimating, this);
-      this.loadImage = __bind(this.loadImage, this);
+      this.render = __bind(this.render, this);
+      this.onChangeSelected = __bind(this.onChangeSelected, this);
       this.preloadImages = __bind(this.preloadImages, this);
       this.currentImage = __bind(this.currentImage, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesView.__super__.constructor.apply(this, arguments);
@@ -568,19 +599,20 @@
       this.currentImageIndex = 0;
       this.isAnimating = false;
       this.animator = new Bordeaux.AnimatorView();
-      this.preloadImages(this.loadImage);
-      this.collection.on('reset', this.onCodeChange);
-      this.collection.on('change', this.onCodeChange);
-      return this.collection.each(function(model) {
-        return model.on('change:click', _this.onCodeChange);
+      this.preloadImages();
+      this.collection.on('change:url', this.render);
+      this.collection.on('change:animation', this.render);
+      this.collection.each(function(model) {
+        return model.on('change:click', _this.showClickZone);
       });
+      return Bordeaux.pageState.on('change:selected', this.onChangeSelected);
     };
 
     ImagesView.prototype.currentImage = function() {
       return this.collection.models[this.currentImageIndex];
     };
 
-    ImagesView.prototype.preloadImages = function(done) {
+    ImagesView.prototype.preloadImages = function() {
       var preloader,
         _this = this;
 
@@ -589,41 +621,57 @@
         urls: this.collection.pluck('url'),
         complete: function() {
           _this.$el.find(".loading-overlay").remove();
-          return done();
+          return Bordeaux.pageState.set('selected', _this.collection.at(_this.currentImageIndex));
         }
       });
       return preloader.start();
     };
 
-    ImagesView.prototype.loadImage = function() {
+    ImagesView.prototype.onChangeSelected = function() {
+      var newImage;
+
+      this.removeClickZone();
+      newImage = Bordeaux.pageState.get('selected');
+      this.currentImageIndex = this.collection.indexOf(newImage);
+      return this.render();
+    };
+
+    ImagesView.prototype.render = function() {
       return this.animator[this.currentImage().get('animation')](this.currentImage(), this.onDoneAnimating);
     };
 
     ImagesView.prototype.onDoneAnimating = function() {
       this.isAnimating = false;
+      return this.showClickZone();
+    };
+
+    ImagesView.prototype.showClickZone = function() {
+      this.removeClickZone();
       return this.$el.append(JST['click_zone']({
         image: this.currentImage()
       }));
+    };
+
+    ImagesView.prototype.removeClickZone = function(fadeOutDuration) {
+      if (fadeOutDuration == null) {
+        fadeOutDuration = 0;
+      }
+      return this.$el.find('.click-zone').fadeOut(fadeOutDuration, function() {
+        return this.remove();
+      });
     };
 
     ImagesView.prototype.onClickZoneClick = function() {
       if (this.isAnimating) {
         return;
       }
-      this.$el.find('.click-zone').fadeOut(100, function() {
-        return this.remove();
-      });
+      this.removeClickZone(100);
       this.isAnimating = true;
       this.currentImageIndex += 1;
       if (this.currentImageIndex === this.collection.models.length) {
         this.currentImageIndex = 0;
       }
-      return this.loadImage();
-    };
-
-    ImagesView.prototype.onCodeChange = function() {
-      this.$el.find('.click-zone').remove();
-      return this.loadImage();
+      return Bordeaux.pageState.set('selected', this.currentImage());
     };
 
     return ImagesView;

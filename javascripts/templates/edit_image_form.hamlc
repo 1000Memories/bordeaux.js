@@ -1,4 +1,4 @@
-%li.edit-image-form{:'data-cid' => @image.cid}
+%li.edit-image-form{:'data-cid' => @image.cid, :class => if Bordeaux.pageState.get('selected') == @image then "selected" else ""}
   %input.image-url{:name => "url", :value => @image.get('url'), :placeholder => "Image URL"}
   %p
     %select{:name => "animation"}

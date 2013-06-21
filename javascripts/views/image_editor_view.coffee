@@ -21,7 +21,10 @@ class @Bordeaux.ImageEditorView extends Backbone.View
     value = $(e.currentTarget).val()
     @model.set('animation', value)
 
-  render: =>
+  onClickForm: (e) =>
+    Bordeaux.pageState.set('selected', @model)
+
+  html: =>
     JST['edit_image_form'](image: @model)
 
   $form: =>
@@ -31,4 +34,7 @@ class @Bordeaux.ImageEditorView extends Backbone.View
     @$form().on('keyup', '[name=url]', @onChangeUrl)
     @$form().on('keyup', '[name=x]', @onChangeX)
     @$form().on('keyup', '[name=y]', @onChangeY)
-    @$form().on('change', '[name=animation]', @onChangeAnimation)
+    @$form().on 'change', '[name=animation]', (e) =>
+      @onClickForm(e) # select doesn't fire a "click" event
+      @onChangeAnimation(e)
+    @$form().on('click', @onClickForm)
