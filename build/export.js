@@ -207,7 +207,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL' type='text'>\n  <a class='remove' href='#'>X</a>\n  <p>\n    <select name='animation'>");
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL' type='text'>\n  <a class='icon iconTrash remove' href='#'></a>\n  <p>\n    <select name='animation'>");
       _ref1 = Bordeaux.animations;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         animation = _ref1[_i];
@@ -233,7 +233,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("\n<html>\n  <head>\n    <title>Bordeaux.js Export</title>\n    <meta charset='utf-8'>\n    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css'>\n    <link rel='stylesheet' href='assets/bordeaux.css?v=" + ($e($c(Date.now()))) + "'>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>\n    <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'></script>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>\n    <script src='http://6.github.io/image_preloader.js/image_preloader.js'></script>\n    <script src='assets/bordeaux.js?v=" + ($e($c(Date.now()))) + "'></script>\n  </head>\n  <body class='export'>\n    <div id='container'>\n      <div class='iphone4' id='phone-background'>\n        <div id='images-view'>\n          <div class='image-container'></div>\n        </div>\n      </div>\n    </div>\n    <script>\n      alert(\"TEST\");\n      var json = " + (JSON.stringify(this.json)) + ";\n      Bordeaux.pageState = new Bordeaux.PageState({editable: false});\n      var images = new Bordeaux.Images(json);\n      new Bordeaux.ImagesView({collection: images});\n    </script>\n  </body>\n</html>");
+      $o.push("\n<html>\n  <head>\n    <title>Bordeaux.js Export</title>\n    <meta charset='utf-8'>\n    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css'>\n    <link rel='stylesheet' href='assets/bordeaux.css?v=" + ($e($c(Date.now()))) + "'>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>\n    <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js'></script>\n    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>\n    <script src='http://6.github.io/image_preloader.js/image_preloader.js'></script>\n    <script src='assets/bordeaux.js?v=" + ($e($c(Date.now()))) + "'></script>\n  </head>\n  <body class='export'>\n    <div id='container'>\n      <div class='iphone4' id='phone-background'>\n        <div id='images-view'>\n          <div class='image-container'></div>\n        </div>\n      </div>\n    </div>\n    <script>\n      var json = " + (JSON.stringify(this.json)) + ";\n      Bordeaux.pageState = new Bordeaux.PageState({editable: false});\n      var images = new Bordeaux.Images(json);\n      new Bordeaux.ImagesView({collection: images});\n    </script>\n  </body>\n</html>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
@@ -329,7 +329,6 @@
     };
 
     ImagesView.prototype.initialize = function() {
-      console.log("INITIALIZE");
       this.currentImageIndex = 0;
       this.isAnimating = false;
       this.animator = new Bordeaux.AnimatorView();
@@ -349,12 +348,10 @@
         _this = this;
 
       this.$el.prepend(JST['loading']());
-      console.log("LOAD", this.collection.pluck('url'));
       preloader = new ImagePreloader({
         urls: this.collection.pluck('url'),
         complete: function() {
           _this.$el.find(".loading-overlay").remove();
-          console.log("DONE LOADING", _this.collection.at(_this.currentImageIndex));
           return Bordeaux.pageState.set('selected', _this.collection.at(_this.currentImageIndex));
         }
       });
@@ -371,7 +368,6 @@
     };
 
     ImagesView.prototype.render = function() {
-      console.log("RENDER", this.currentImage());
       return this.animator[this.currentImage().get('animation')](this.currentImage(), this.onDoneAnimating);
     };
 
@@ -541,7 +537,6 @@
       var flipHtml,
         _this = this;
 
-      console.log("FLIP", nextImage);
       flipHtml = JST['flip']({
         frontImageUrl: this.$currentImage().attr('src'),
         backImageUrl: nextImage.get('url')
