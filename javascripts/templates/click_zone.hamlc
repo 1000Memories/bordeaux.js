@@ -1,3 +1,2 @@
 %a#target.click-zone{:href => "#", :style => "position: absolute; top: #{@image.get('click').y}px; left: #{@image.get('click').x}px"}
-  %img.indicator{:src => "images/spot.png"}
   %#pulse

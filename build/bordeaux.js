@@ -188,7 +188,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<a class='click-zone' id='target' href='#' style='position: absolute; top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <img class='indicator' src='images/spot.png'>\n  <div id='pulse'></div>\n</a>");
+      $o.push("<a class='click-zone' id='target' href='#' style='position: absolute; top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <div id='pulse'></div>\n</a>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
@@ -501,7 +501,7 @@
       if (this.isAnimating) {
         return;
       }
-      this.$el.find('.click-zone').hide(100, function() {
+      this.$el.find('.click-zone').fadeOut(100, function() {
         return this.remove();
       });
       this.isAnimating = true;
