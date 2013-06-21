@@ -1,4 +1,4 @@
-class @Bordeaux.Animator extends Backbone.View
+class @Bordeaux.AnimatorView extends Backbone.View
   el: '.image-container'
 
   $currentImage: =>

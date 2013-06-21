@@ -6,7 +6,7 @@ class @Bordeaux.ImagesView extends Backbone.View
   initialize: =>
     @currentImageIndex = 0
     @isAnimating = false
-    @animator = new Bordeaux.Animator()
+    @animator = new Bordeaux.AnimatorView()
     @preloadImages(@loadImage)
     @collection.on('reset', @onCodeChange)
 
