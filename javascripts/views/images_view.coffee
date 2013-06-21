@@ -31,7 +31,7 @@ class @Bordeaux.ImagesView extends Backbone.View
 
   onClickZoneClick: =>
     return  if @isAnimating
-    @$el.find('.click-zone').hide(100, -> @remove())
+    @$el.find('.click-zone').fadeOut(100, -> @remove())
     @isAnimating = true
     @currentImageIndex += 1
     #  loops back to the first image
