@@ -1,3 +1,6 @@
+@import "editor";
+@import "phone";
+@import "image";
 @import "clearfix";
 @import "flipper";
 @import "pulse";
@@ -5,103 +8,4 @@
 #container {
   position: relative;
   padding-top: 50px;
-  #editor-view-wrap {
-    width: 500px;
-    float: left;
-    margin: 0 50px;
-  }
-  #phone-background {
-    float: right;
-  }
-}
-
-#editor-view {
-  background: #eee;
-  border: 1px solid #ccc;
-  border-bottom: none;
-  li {
-    position: relative;
-    padding: 12px 20px;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #fff;
-    &.selected {
-      background: #bbb;
-      border-top: 1px solid #888;
-      border-bottom: 1px solid #888;
-    }
-    .image-url {
-      width: 300px;
-    }
-    .coordinate {
-      width: 40px;
-    }
-    .remove {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: block;
-      color: #999;
-      text-decoration: none;
-      font-size: 20px;
-      padding: 4px 8px;
-      &:hover {
-        color: #555;
-      }
-    }
-  }
-}
-
-#images-view {
-  position: relative;
-  overflow: hidden;
-  cursor: crosshair;
-  img {
-    position: absolute;
-    left: 0;
-  }
-  .click-zone-wrap {
-    margin-left: -25px;
-    margin-top: -25px;
-    width: 50px;
-    height: 50px;
-    z-index: 2;
-    position: absolute;
-    background: url('../images/spot.png') no-repeat center center;
-  }
-  .click-zone {
-    position: relative; // position: relative to always go over the "pulse" animation
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-  .loading-overlay {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: #444 url(../images/spinner-444.gif) no-repeat center center;
-  }
-}
-
-#phone-background {
-  background-repeat: no-repeat;
-  &.iphone4 {
-    $screen-width: 320px;
-    $screen-height: 480px;
-    background-image: url('../images/phones/iphone4_black.jpg');
-    width: 439px;
-    height: 824px;
-    #images-view {
-      top: 129px;
-      left: 57px;
-      width: $screen-width;
-      height: $screen-height;
-    }
-    .image-container img {
-      z-index: 1;
-      width: $screen-width;
-      height: $screen-height;
-    }
-  }
 }
