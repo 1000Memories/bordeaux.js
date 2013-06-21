@@ -6,16 +6,34 @@
   position: relative;
   padding-top: 50px;
   #editor-view {
+    background: #eee;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    width: 500px;
     float: left;
     margin: 0 50px;
-    #editor {
-      width: 500px;
-      height: 700px;
-      border: 1px solid #ccc;
-    }
   }
   #phone-background {
     float: right;
+  }
+}
+
+#editor-view {
+  li {
+    padding: 12px 20px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #fff;
+    &.selected {
+      background: #bbb;
+      border-top: 1px solid #888;
+      border-bottom: 1px solid #888;
+    }
+    .image-url {
+      width: 300px;
+    }
+    .coordinate {
+      width: 40px;
+    }
   }
 }
 
@@ -26,12 +44,18 @@
     position: absolute;
     left: 0;
   }
-  .click-zone {
-    cursor: pointer;
+  .click-zone-wrap {
     width: 50px;
     height: 50px;
     z-index: 2;
+    position: absolute;
     background: url('../images/spot.png') no-repeat center center;
+  }
+  .click-zone {
+    position: relative; // position: relative to always go over the "pulse" animation
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
   .loading-overlay {
     position: absolute;

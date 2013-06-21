@@ -15,10 +15,7 @@
   </head>
   <body>
     <div id="container" class="clearfix">
-      <div id="editor-view">
-        <div id="editor"></div>
-        <button class="update-code-button">Update &rarr;</button>
-      </div>
+      <ol id="editor-view"></ol>
       <div id="phone-background" class="iphone4">
         <div id="images-view">
           <div class="image-container"></div>
@@ -110,8 +107,9 @@
             }
           }
         ];
+        Bordeaux.pageState = new Bordeaux.PageState();
         var images = new Bordeaux.Images(json);
-        new Bordeaux.EditorView({collection: images});
+        new Bordeaux.ImagesEditorView({collection: images});
         new Bordeaux.ImagesView({collection: images});
       });
     </script>

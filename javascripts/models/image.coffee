@@ -1,14 +1,4 @@
 class @Bordeaux.Image extends Backbone.Model
-  animations: [
-    'fadeIn',
-    'slideToTop',
-    'slideToLeft',
-    'slideToRight',
-    'revealFromTop',
-    'flip',
-    'none'
-  ]
-
   initialize: =>
     if !@hasValidAnimation()
       throw new Error("Invalid animation '#{@get('animation')}'")
@@ -23,7 +13,7 @@ class @Bordeaux.Image extends Backbone.Model
     @get('url')? && @get('url').length > 0
 
   hasValidAnimation: =>
-    @get('animation') in @animations
+    @get('animation') in Bordeaux.animations
 
   hasValidClickZone: =>
     @get('click') && @get('click').x && @get('click').y && @get('click').x > 0 && @get('click').x < 320 && @get('click').y > 0 && @get('click').y < 480

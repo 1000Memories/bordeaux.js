@@ -1,4 +1,4 @@
-class @Bordeaux.Animator extends Backbone.View
+class @Bordeaux.AnimatorView extends Backbone.View
   el: '.image-container'
 
   $currentImage: =>
@@ -13,7 +13,7 @@ class @Bordeaux.Animator extends Backbone.View
 
   fadeIn: (nextImage, done) =>
     @$currentImage().fadeOut 100, =>
-      @$el.html(@nextImageHtml(nextImage)).hide(0).fadeIn(100, done)
+      @$el.html(@nextImageHtml(nextImage)).hide(0).fadeIn(150, done)
 
   slideToTop: (nextImage, done) =>
     $nextImage = $(@nextImageHtml(nextImage))

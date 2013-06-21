@@ -102,6 +102,8 @@
     window.Bordeaux = {};
   }
 
+  Bordeaux.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'flip', 'none'];
+
 }).call(this);
 (function() {
   var _ref,
@@ -120,8 +122,6 @@
       this.initialize = __bind(this.initialize, this);      _ref = Image.__super__.constructor.apply(this, arguments);
       return _ref;
     }
-
-    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'flip', 'none'];
 
     Image.prototype.initialize = function() {
       if (!this.hasValidAnimation()) {
@@ -142,7 +142,7 @@
     Image.prototype.hasValidAnimation = function() {
       var _ref1;
 
-      return _ref1 = this.get('animation'), __indexOf.call(this.animations, _ref1) >= 0;
+      return _ref1 = this.get('animation'), __indexOf.call(Bordeaux.animations, _ref1) >= 0;
     };
 
     Image.prototype.hasValidClickZone = function() {
@@ -150,6 +150,24 @@
     };
 
     return Image;
+
+  })(Backbone.Model);
+
+}).call(this);
+(function() {
+  var _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  this.Bordeaux.PageState = (function(_super) {
+    __extends(PageState, _super);
+
+    function PageState() {
+      _ref = PageState.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    return PageState;
 
   })(Backbone.Model);
 
@@ -188,7 +206,33 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<a class='click-zone' id='target' href='#' style='position: absolute; top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <div id='pulse'></div>\n</a>");
+      $o.push("<a class='click-zone-wrap' id='target' href='#' style='top: " + ($e($c(this.image.get('click').y))) + "px; left: " + ($e($c(this.image.get('click').x))) + "px'>\n  <div id='pulse'></div>\n  <div class='click-zone'></div>\n</a>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
+  window.JST['edit_image_form'] = function(context) {
+    return (function() {
+      var $c, $e, $o, animation, _i, _len, _ref1;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <p>\n    <select name='animation'>");
+      _ref1 = Bordeaux.animations;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        animation = _ref1[_i];
+        $o.push("      <option class='animation' value='" + ($e($c(animation))) + "' selected='" + ($e($c(this.image.get('animation') === animation))) + "'>" + ($e($c(animation))) + "</option>");
+      }
+      $o.push("    </select>\n    <input class='coordinate' name='x' value='" + ($e($c(this.image.get('click').x))) + "' placeholder='X'>\n    <input class='coordinate' name='y' value='" + ($e($c(this.image.get('click').y))) + "' placeholder='Y'>\n  </p>\n</li>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
@@ -258,10 +302,10 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  this.Bordeaux.Animator = (function(_super) {
-    __extends(Animator, _super);
+  this.Bordeaux.AnimatorView = (function(_super) {
+    __extends(AnimatorView, _super);
 
-    function Animator() {
+    function AnimatorView() {
       this.reset = __bind(this.reset, this);
       this.flip = __bind(this.flip, this);
       this.revealFromTop = __bind(this.revealFromTop, this);
@@ -271,36 +315,36 @@
       this.fadeIn = __bind(this.fadeIn, this);
       this.none = __bind(this.none, this);
       this.nextImageHtml = __bind(this.nextImageHtml, this);
-      this.$currentImage = __bind(this.$currentImage, this);      _ref = Animator.__super__.constructor.apply(this, arguments);
+      this.$currentImage = __bind(this.$currentImage, this);      _ref = AnimatorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    Animator.prototype.el = '.image-container';
+    AnimatorView.prototype.el = '.image-container';
 
-    Animator.prototype.$currentImage = function() {
+    AnimatorView.prototype.$currentImage = function() {
       return this.$el.find("img:first");
     };
 
-    Animator.prototype.nextImageHtml = function(nextImage) {
+    AnimatorView.prototype.nextImageHtml = function(nextImage) {
       return JST['image']({
         image: nextImage
       });
     };
 
-    Animator.prototype.none = function(nextImage, done) {
+    AnimatorView.prototype.none = function(nextImage, done) {
       this.$el.html(this.nextImageHtml(nextImage));
       return typeof done === "function" ? done() : void 0;
     };
 
-    Animator.prototype.fadeIn = function(nextImage, done) {
+    AnimatorView.prototype.fadeIn = function(nextImage, done) {
       var _this = this;
 
       return this.$currentImage().fadeOut(100, function() {
-        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(100, done);
+        return _this.$el.html(_this.nextImageHtml(nextImage)).hide(0).fadeIn(150, done);
       });
     };
 
-    Animator.prototype.slideToTop = function(nextImage, done) {
+    AnimatorView.prototype.slideToTop = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -315,7 +359,7 @@
       });
     };
 
-    Animator.prototype.slideToLeft = function(nextImage, done) {
+    AnimatorView.prototype.slideToLeft = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -330,7 +374,7 @@
       });
     };
 
-    Animator.prototype.slideToRight = function(nextImage, done) {
+    AnimatorView.prototype.slideToRight = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -345,7 +389,7 @@
       });
     };
 
-    Animator.prototype.revealFromTop = function(nextImage, done) {
+    AnimatorView.prototype.revealFromTop = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -360,7 +404,7 @@
       });
     };
 
-    Animator.prototype.flip = function(nextImage, done) {
+    AnimatorView.prototype.flip = function(nextImage, done) {
       var flipHtml,
         _this = this;
 
@@ -376,12 +420,12 @@
       }, 620);
     };
 
-    Animator.prototype.reset = function() {
+    AnimatorView.prototype.reset = function() {
       this.$el.find("img:first").remove();
       return this.$currentImage().css('z-index', '');
     };
 
-    return Animator;
+    return AnimatorView;
 
   })(Backbone.View);
 
@@ -392,43 +436,131 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  this.Bordeaux.EditorView = (function(_super) {
-    __extends(EditorView, _super);
+  this.Bordeaux.ImageEditorView = (function(_super) {
+    __extends(ImageEditorView, _super);
 
-    function EditorView() {
-      this.onCodeChange = __bind(this.onCodeChange, this);
-      this.initialize = __bind(this.initialize, this);      _ref = EditorView.__super__.constructor.apply(this, arguments);
+    function ImageEditorView() {
+      this.bindEvents = __bind(this.bindEvents, this);
+      this.$form = __bind(this.$form, this);
+      this.html = __bind(this.html, this);
+      this.onClickForm = __bind(this.onClickForm, this);
+      this.onChangeAnimation = __bind(this.onChangeAnimation, this);
+      this.onChangeY = __bind(this.onChangeY, this);
+      this.onChangeX = __bind(this.onChangeX, this);
+      this.onChangeUrl = __bind(this.onChangeUrl, this);      _ref = ImageEditorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    EditorView.prototype.el = '#editor-view';
+    ImageEditorView.prototype.onChangeUrl = function(e) {
+      var value;
 
-    EditorView.prototype.events = {
-      'click .update-code-button': 'onCodeChange'
+      value = $(e.currentTarget).val();
+      return this.model.set('url', value);
     };
 
-    EditorView.prototype.initialize = function() {
-      this.editor = ace.edit("editor");
-      this.editor.getSession().setMode("ace-json");
-      this.editor.getSession().setTabSize(2);
-      this.editor.getSession().setUseSoftTabs(true);
-      this.editor.setValue(JSON.stringify(this.collection.toJSON(), null, '  '));
-      return this.editor.clearSelection();
+    ImageEditorView.prototype.onChangeX = function(e) {
+      var click, value;
+
+      value = parseInt($(e.currentTarget).val());
+      click = this.model.get('click');
+      click.x = value;
+      this.model.set('click', click);
+      return this.model.trigger("change:click");
     };
 
-    EditorView.prototype.onCodeChange = function() {
-      var e, json;
+    ImageEditorView.prototype.onChangeY = function(e) {
+      var click, value;
 
-      try {
-        json = JSON.parse(this.editor.getValue());
-        return this.collection.reset(json);
-      } catch (_error) {
-        e = _error;
-        return alert(e);
+      value = parseInt($(e.currentTarget).val());
+      click = this.model.get('click');
+      click.y = value;
+      this.model.set('click', click);
+      return this.model.trigger("change:click");
+    };
+
+    ImageEditorView.prototype.onChangeAnimation = function(e) {
+      var value;
+
+      value = $(e.currentTarget).val();
+      return this.model.set('animation', value);
+    };
+
+    ImageEditorView.prototype.onClickForm = function(e) {
+      return Bordeaux.pageState.set('selected', this.model);
+    };
+
+    ImageEditorView.prototype.html = function() {
+      return JST['edit_image_form']({
+        image: this.model
+      });
+    };
+
+    ImageEditorView.prototype.$form = function() {
+      return $(".edit-image-form[data-cid=" + this.model.cid + "]");
+    };
+
+    ImageEditorView.prototype.bindEvents = function() {
+      var _this = this;
+
+      this.$form().on('keyup', '[name=url]', this.onChangeUrl);
+      this.$form().on('keyup', '[name=x]', this.onChangeX);
+      this.$form().on('keyup', '[name=y]', this.onChangeY);
+      this.$form().on('change', '[name=animation]', function(e) {
+        _this.onChangeAnimation(e);
+        return _this.onClickForm(e);
+      });
+      return this.$form().on('click', this.onClickForm);
+    };
+
+    return ImageEditorView;
+
+  })(Backbone.View);
+
+}).call(this);
+(function() {
+  var _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  this.Bordeaux.ImagesEditorView = (function(_super) {
+    __extends(ImagesEditorView, _super);
+
+    function ImagesEditorView() {
+      this.render = __bind(this.render, this);
+      this.initialize = __bind(this.initialize, this);      _ref = ImagesEditorView.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    ImagesEditorView.prototype.el = '#editor-view';
+
+    ImagesEditorView.prototype.initialize = function() {
+      var _this = this;
+
+      this.views = [];
+      this.collection.each(function(image) {
+        return _this.views.push(new Bordeaux.ImageEditorView({
+          model: image
+        }));
+      });
+      return Bordeaux.pageState.on('change:selected', this.render);
+    };
+
+    ImagesEditorView.prototype.render = function() {
+      var view, _i, _len, _ref1, _results;
+
+      this.$el.html("");
+      _ref1 = this.views;
+      _results = [];
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        view = _ref1[_i];
+        this.$el.append(view.html());
+        _results.push(view.bindEvents());
       }
+      return _results;
     };
 
-    return EditorView;
+    return ImagesEditorView;
 
   })(Backbone.View);
 
@@ -443,10 +575,12 @@
     __extends(ImagesView, _super);
 
     function ImagesView() {
-      this.onCodeChange = __bind(this.onCodeChange, this);
       this.onClickZoneClick = __bind(this.onClickZoneClick, this);
+      this.removeClickZone = __bind(this.removeClickZone, this);
+      this.showClickZone = __bind(this.showClickZone, this);
       this.onDoneAnimating = __bind(this.onDoneAnimating, this);
-      this.loadImage = __bind(this.loadImage, this);
+      this.render = __bind(this.render, this);
+      this.onChangeSelected = __bind(this.onChangeSelected, this);
       this.preloadImages = __bind(this.preloadImages, this);
       this.currentImage = __bind(this.currentImage, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesView.__super__.constructor.apply(this, arguments);
@@ -456,22 +590,30 @@
     ImagesView.prototype.el = '#images-view';
 
     ImagesView.prototype.events = {
-      'click .click-zone': 'onClickZoneClick'
+      'click .click-zone': 'onClickZoneClick',
+      'click #pulse': 'onClickZoneClick'
     };
 
     ImagesView.prototype.initialize = function() {
+      var _this = this;
+
       this.currentImageIndex = 0;
       this.isAnimating = false;
-      this.animator = new Bordeaux.Animator();
-      this.preloadImages(this.loadImage);
-      return this.collection.on('reset', this.onCodeChange);
+      this.animator = new Bordeaux.AnimatorView();
+      this.preloadImages();
+      this.collection.on('change:url', this.render);
+      this.collection.on('change:animation', this.render);
+      this.collection.each(function(model) {
+        return model.on('change:click', _this.showClickZone);
+      });
+      return Bordeaux.pageState.on('change:selected', this.onChangeSelected);
     };
 
     ImagesView.prototype.currentImage = function() {
       return this.collection.models[this.currentImageIndex];
     };
 
-    ImagesView.prototype.preloadImages = function(done) {
+    ImagesView.prototype.preloadImages = function() {
       var preloader,
         _this = this;
 
@@ -480,41 +622,57 @@
         urls: this.collection.pluck('url'),
         complete: function() {
           _this.$el.find(".loading-overlay").remove();
-          return done();
+          return Bordeaux.pageState.set('selected', _this.collection.at(_this.currentImageIndex));
         }
       });
       return preloader.start();
     };
 
-    ImagesView.prototype.loadImage = function() {
+    ImagesView.prototype.onChangeSelected = function() {
+      var newImage;
+
+      this.removeClickZone();
+      newImage = Bordeaux.pageState.get('selected');
+      this.currentImageIndex = this.collection.indexOf(newImage);
+      return this.render();
+    };
+
+    ImagesView.prototype.render = function() {
       return this.animator[this.currentImage().get('animation')](this.currentImage(), this.onDoneAnimating);
     };
 
     ImagesView.prototype.onDoneAnimating = function() {
       this.isAnimating = false;
+      return this.showClickZone();
+    };
+
+    ImagesView.prototype.showClickZone = function() {
+      this.removeClickZone();
       return this.$el.append(JST['click_zone']({
         image: this.currentImage()
       }));
+    };
+
+    ImagesView.prototype.removeClickZone = function(fadeOutDuration) {
+      if (fadeOutDuration == null) {
+        fadeOutDuration = 0;
+      }
+      return this.$el.find('.click-zone-wrap').fadeOut(fadeOutDuration, function() {
+        return this.remove();
+      });
     };
 
     ImagesView.prototype.onClickZoneClick = function() {
       if (this.isAnimating) {
         return;
       }
-      this.$el.find('.click-zone').fadeOut(100, function() {
-        return this.remove();
-      });
+      this.removeClickZone(100);
       this.isAnimating = true;
       this.currentImageIndex += 1;
       if (this.currentImageIndex === this.collection.models.length) {
         this.currentImageIndex = 0;
       }
-      return this.loadImage();
-    };
-
-    ImagesView.prototype.onCodeChange = function() {
-      this.$el.find('.click-zone').remove();
-      return this.loadImage();
+      return Bordeaux.pageState.set('selected', this.currentImage());
     };
 
     return ImagesView;
