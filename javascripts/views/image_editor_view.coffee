@@ -21,6 +21,10 @@ class @Bordeaux.ImageEditorView extends Backbone.View
     value = $(e.currentTarget).val()
     @model.set('animation', value)
 
+  onClickRemove: (e) =>
+    e.preventDefault()
+    @model.destroy()
+
   onClickForm: (e) =>
     Bordeaux.pageState.set('selected', @model)
 
@@ -38,3 +42,4 @@ class @Bordeaux.ImageEditorView extends Backbone.View
       @onChangeAnimation(e)
       @onClickForm(e) # select doesn't fire a "click" event
     @$form().on('click', @onClickForm)
+    @$form().on('click', '.remove', @onClickRemove)

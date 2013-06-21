@@ -226,7 +226,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <p>\n    <select name='animation'>");
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <a class='remove' href='#'>remove</a>\n  <p>\n    <select name='animation'>");
       _ref1 = Bordeaux.animations;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         animation = _ref1[_i];
@@ -444,6 +444,7 @@
       this.$form = __bind(this.$form, this);
       this.html = __bind(this.html, this);
       this.onClickForm = __bind(this.onClickForm, this);
+      this.onClickRemove = __bind(this.onClickRemove, this);
       this.onChangeAnimation = __bind(this.onChangeAnimation, this);
       this.onChangeY = __bind(this.onChangeY, this);
       this.onChangeX = __bind(this.onChangeX, this);
@@ -485,6 +486,11 @@
       return this.model.set('animation', value);
     };
 
+    ImageEditorView.prototype.onClickRemove = function(e) {
+      e.preventDefault();
+      return this.model.destroy();
+    };
+
     ImageEditorView.prototype.onClickForm = function(e) {
       return Bordeaux.pageState.set('selected', this.model);
     };
@@ -509,7 +515,8 @@
         _this.onChangeAnimation(e);
         return _this.onClickForm(e);
       });
-      return this.$form().on('click', this.onClickForm);
+      this.$form().on('click', this.onClickForm);
+      return this.$form().on('click', '.remove', this.onClickRemove);
     };
 
     return ImageEditorView;
@@ -527,6 +534,7 @@
     __extends(ImagesEditorView, _super);
 
     function ImagesEditorView() {
+      this.onRemoveStep = __bind(this.onRemoveStep, this);
       this.render = __bind(this.render, this);
       this.initialize = __bind(this.initialize, this);      _ref = ImagesEditorView.__super__.constructor.apply(this, arguments);
       return _ref;
@@ -543,7 +551,8 @@
           model: image
         }));
       });
-      return Bordeaux.pageState.on('change:selected', this.render);
+      Bordeaux.pageState.on('change:selected', this.render);
+      return this.collection.on('remove', this.onRemoveStep);
     };
 
     ImagesEditorView.prototype.render = function() {
@@ -558,6 +567,21 @@
         _results.push(view.bindEvents());
       }
       return _results;
+    };
+
+    ImagesEditorView.prototype.onRemoveStep = function(model) {
+      var newViews, view, _i, _len, _ref1;
+
+      newViews = [];
+      _ref1 = this.views;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        view = _ref1[_i];
+        if (view.model.cid !== model.cid) {
+          newViews.push(view);
+        }
+      }
+      this.views = newViews;
+      return this.render();
     };
 
     return ImagesEditorView;
