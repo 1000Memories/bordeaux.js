@@ -6,13 +6,11 @@
   position: relative;
   padding-top: 50px;
   #editor-view {
+    border: solid 1px;
+    width: 500px;
+    height: 800px;
     float: left;
     margin: 0 50px;
-    #editor {
-      width: 500px;
-      height: 700px;
-      border: 1px solid #ccc;
-    }
   }
   #phone-background {
     float: right;

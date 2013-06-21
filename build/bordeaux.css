@@ -165,12 +165,11 @@ a#target #pulse {
   position: relative;
   padding-top: 50px; }
   #container #editor-view {
+    border: solid 1px;
+    width: 500px;
+    height: 800px;
     float: left;
     margin: 0 50px; }
-    #container #editor-view #editor {
-      width: 500px;
-      height: 700px;
-      border: 1px solid #ccc; }
   #container #phone-background {
     float: right; }
 

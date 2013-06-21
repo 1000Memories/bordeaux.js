@@ -1,0 +1,5 @@
+%li
+  %input.image-url{:name => "url", :value => @image.get('url'), :placeholder => "Image URL"}
+  %input.image-url{:name => "animation", :value => @image.get('animation'), :placeholder => "Image URL"}
+  %input.image-url{:name => "x", :value => @image.get('click').x, :placeholder => "Image URL"}
+  %input.image-url{:name => "y", :value => @image.get('click').y, :placeholder => "Image URL"}

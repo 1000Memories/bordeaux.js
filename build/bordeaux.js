@@ -201,6 +201,26 @@
     window.JST = {};
   }
 
+  window.JST['edit_image_form'] = function(context) {
+    return (function() {
+      var $c, $e, $o;
+
+      $e = window.HAML.escape;
+      $c = window.HAML.cleanValue;
+      $o = [];
+      $o.push("<li>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <input class='image-url' name='animation' value='" + ($e($c(this.image.get('animation')))) + "' placeholder='Image URL'>\n  <input class='image-url' name='x' value='" + ($e($c(this.image.get('click').x))) + "' placeholder='Image URL'>\n  <input class='image-url' name='y' value='" + ($e($c(this.image.get('click').y))) + "' placeholder='Image URL'>\n</li>");
+      return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(window.HAML.context(context));
+  };
+
+}).call(this);
+(function() {
+  var _ref;
+
+  if ((_ref = window.JST) == null) {
+    window.JST = {};
+  }
+
   window.JST['flip'] = function(context) {
     return (function() {
       var $c, $e, $o;
@@ -258,10 +278,10 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  this.Bordeaux.Animator = (function(_super) {
-    __extends(Animator, _super);
+  this.Bordeaux.AnimatorView = (function(_super) {
+    __extends(AnimatorView, _super);
 
-    function Animator() {
+    function AnimatorView() {
       this.reset = __bind(this.reset, this);
       this.flip = __bind(this.flip, this);
       this.revealFromTop = __bind(this.revealFromTop, this);
@@ -271,28 +291,28 @@
       this.fadeIn = __bind(this.fadeIn, this);
       this.none = __bind(this.none, this);
       this.nextImageHtml = __bind(this.nextImageHtml, this);
-      this.$currentImage = __bind(this.$currentImage, this);      _ref = Animator.__super__.constructor.apply(this, arguments);
+      this.$currentImage = __bind(this.$currentImage, this);      _ref = AnimatorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    Animator.prototype.el = '.image-container';
+    AnimatorView.prototype.el = '.image-container';
 
-    Animator.prototype.$currentImage = function() {
+    AnimatorView.prototype.$currentImage = function() {
       return this.$el.find("img:first");
     };
 
-    Animator.prototype.nextImageHtml = function(nextImage) {
+    AnimatorView.prototype.nextImageHtml = function(nextImage) {
       return JST['image']({
         image: nextImage
       });
     };
 
-    Animator.prototype.none = function(nextImage, done) {
+    AnimatorView.prototype.none = function(nextImage, done) {
       this.$el.html(this.nextImageHtml(nextImage));
       return typeof done === "function" ? done() : void 0;
     };
 
-    Animator.prototype.fadeIn = function(nextImage, done) {
+    AnimatorView.prototype.fadeIn = function(nextImage, done) {
       var _this = this;
 
       return this.$currentImage().fadeOut(100, function() {
@@ -300,7 +320,7 @@
       });
     };
 
-    Animator.prototype.slideToTop = function(nextImage, done) {
+    AnimatorView.prototype.slideToTop = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -315,7 +335,7 @@
       });
     };
 
-    Animator.prototype.slideToLeft = function(nextImage, done) {
+    AnimatorView.prototype.slideToLeft = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -330,7 +350,7 @@
       });
     };
 
-    Animator.prototype.slideToRight = function(nextImage, done) {
+    AnimatorView.prototype.slideToRight = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -345,7 +365,7 @@
       });
     };
 
-    Animator.prototype.revealFromTop = function(nextImage, done) {
+    AnimatorView.prototype.revealFromTop = function(nextImage, done) {
       var $nextImage,
         _this = this;
 
@@ -360,7 +380,7 @@
       });
     };
 
-    Animator.prototype.flip = function(nextImage, done) {
+    AnimatorView.prototype.flip = function(nextImage, done) {
       var flipHtml,
         _this = this;
 
@@ -376,12 +396,12 @@
       }, 620);
     };
 
-    Animator.prototype.reset = function() {
+    AnimatorView.prototype.reset = function() {
       this.$el.find("img:first").remove();
       return this.$currentImage().css('z-index', '');
     };
 
-    return Animator;
+    return AnimatorView;
 
   })(Backbone.View);
 
@@ -392,43 +412,68 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  this.Bordeaux.EditorView = (function(_super) {
-    __extends(EditorView, _super);
+  this.Bordeaux.ImageEditorView = (function(_super) {
+    __extends(ImageEditorView, _super);
 
-    function EditorView() {
-      this.onCodeChange = __bind(this.onCodeChange, this);
-      this.initialize = __bind(this.initialize, this);      _ref = EditorView.__super__.constructor.apply(this, arguments);
+    function ImageEditorView() {
+      this.render = __bind(this.render, this);      _ref = ImageEditorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    EditorView.prototype.el = '#editor-view';
-
-    EditorView.prototype.events = {
-      'click .update-code-button': 'onCodeChange'
+    ImageEditorView.prototype.render = function() {
+      return JST['edit_image_form']({
+        image: this.model
+      });
     };
 
-    EditorView.prototype.initialize = function() {
-      this.editor = ace.edit("editor");
-      this.editor.getSession().setMode("ace-json");
-      this.editor.getSession().setTabSize(2);
-      this.editor.getSession().setUseSoftTabs(true);
-      this.editor.setValue(JSON.stringify(this.collection.toJSON(), null, '  '));
-      return this.editor.clearSelection();
+    return ImageEditorView;
+
+  })(Backbone.View);
+
+}).call(this);
+(function() {
+  var _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  this.Bordeaux.ImagesEditorView = (function(_super) {
+    __extends(ImagesEditorView, _super);
+
+    function ImagesEditorView() {
+      this.render = __bind(this.render, this);
+      this.initialize = __bind(this.initialize, this);      _ref = ImagesEditorView.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    ImagesEditorView.prototype.el = '#editor-view';
+
+    ImagesEditorView.prototype.initialize = function() {
+      var _this = this;
+
+      this.views = [];
+      this.collection.each(function(image) {
+        return _this.views.push(new Bordeaux.ImageEditorView({
+          model: image
+        }));
+      });
+      return this.render();
     };
 
-    EditorView.prototype.onCodeChange = function() {
-      var e, json;
+    ImagesEditorView.prototype.render = function() {
+      var view, _i, _len, _ref1, _results;
 
-      try {
-        json = JSON.parse(this.editor.getValue());
-        return this.collection.reset(json);
-      } catch (_error) {
-        e = _error;
-        return alert(e);
+      this.$el.html("");
+      _ref1 = this.views;
+      _results = [];
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        view = _ref1[_i];
+        _results.push(this.$el.append(view.render()));
       }
+      return _results;
     };
 
-    return EditorView;
+    return ImagesEditorView;
 
   })(Backbone.View);
 
@@ -462,7 +507,7 @@
     ImagesView.prototype.initialize = function() {
       this.currentImageIndex = 0;
       this.isAnimating = false;
-      this.animator = new Bordeaux.Animator();
+      this.animator = new Bordeaux.AnimatorView();
       this.preloadImages(this.loadImage);
       return this.collection.on('reset', this.onCodeChange);
     };
