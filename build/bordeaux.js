@@ -102,6 +102,8 @@
     window.Bordeaux = {};
   }
 
+  Bordeaux.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'flip', 'none'];
+
 }).call(this);
 (function() {
   var _ref,
@@ -120,8 +122,6 @@
       this.initialize = __bind(this.initialize, this);      _ref = Image.__super__.constructor.apply(this, arguments);
       return _ref;
     }
-
-    Image.prototype.animations = ['fadeIn', 'slideToTop', 'slideToLeft', 'slideToRight', 'revealFromTop', 'flip', 'none'];
 
     Image.prototype.initialize = function() {
       if (!this.hasValidAnimation()) {
@@ -142,7 +142,7 @@
     Image.prototype.hasValidAnimation = function() {
       var _ref1;
 
-      return _ref1 = this.get('animation'), __indexOf.call(this.animations, _ref1) >= 0;
+      return _ref1 = this.get('animation'), __indexOf.call(Bordeaux.animations, _ref1) >= 0;
     };
 
     Image.prototype.hasValidClickZone = function() {
@@ -203,12 +203,18 @@
 
   window.JST['edit_image_form'] = function(context) {
     return (function() {
-      var $c, $e, $o;
+      var $c, $e, $o, animation, _i, _len, _ref1;
 
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<li>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <input class='image-url' name='animation' value='" + ($e($c(this.image.get('animation')))) + "' placeholder='Image URL'>\n  <input class='image-url' name='x' value='" + ($e($c(this.image.get('click').x))) + "' placeholder='Image URL'>\n  <input class='image-url' name='y' value='" + ($e($c(this.image.get('click').y))) + "' placeholder='Image URL'>\n</li>");
+      $o.push("<li class='edit-image-form' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <p>\n    <select name='animation'>");
+      _ref1 = Bordeaux.animations;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        animation = _ref1[_i];
+        $o.push("      <option class='animation' value='" + ($e($c(animation))) + "' selected='" + ($e($c(this.image.get('animation') === animation))) + "'>" + ($e($c(animation))) + "</option>");
+      }
+      $o.push("    </select>\n    <input class='coordinate' name='x' value='" + ($e($c(this.image.get('click').x))) + "' placeholder='X'>\n    <input class='coordinate' name='y' value='" + ($e($c(this.image.get('click').y))) + "' placeholder='Y'>\n  </p>\n</li>");
       return $o.join("\n").replace(/\s(\w+)='true'/mg, ' $1').replace(/\s(\w+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(window.HAML.context(context));
   };
@@ -416,14 +422,65 @@
     __extends(ImageEditorView, _super);
 
     function ImageEditorView() {
-      this.render = __bind(this.render, this);      _ref = ImageEditorView.__super__.constructor.apply(this, arguments);
+      this.bindEvents = __bind(this.bindEvents, this);
+      this.$form = __bind(this.$form, this);
+      this.render = __bind(this.render, this);
+      this.onChangeAnimation = __bind(this.onChangeAnimation, this);
+      this.onChangeY = __bind(this.onChangeY, this);
+      this.onChangeX = __bind(this.onChangeX, this);
+      this.onChangeUrl = __bind(this.onChangeUrl, this);      _ref = ImageEditorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
+
+    ImageEditorView.prototype.onChangeUrl = function(e) {
+      var value;
+
+      value = $(e.currentTarget).val();
+      return this.model.set('url', value);
+    };
+
+    ImageEditorView.prototype.onChangeX = function(e) {
+      var click, value;
+
+      value = parseInt($(e.currentTarget).val());
+      click = this.model.get('click');
+      click.x = value;
+      this.model.set('click', click);
+      return this.model.trigger("change:click");
+    };
+
+    ImageEditorView.prototype.onChangeY = function(e) {
+      var click, value;
+
+      value = parseInt($(e.currentTarget).val());
+      click = this.model.get('click');
+      click.y = value;
+      this.model.set('click', click);
+      return this.model.trigger("change:click");
+    };
+
+    ImageEditorView.prototype.onChangeAnimation = function(e) {
+      var value;
+
+      value = $(e.currentTarget).val();
+      return this.model.set('animation', value);
+    };
 
     ImageEditorView.prototype.render = function() {
       return JST['edit_image_form']({
         image: this.model
       });
+    };
+
+    ImageEditorView.prototype.$form = function() {
+      return $(".edit-image-form[data-cid=" + this.model.cid + "]");
+    };
+
+    ImageEditorView.prototype.bindEvents = function() {
+      this.$form().on('keyup', '[name=url]', this.onChangeUrl);
+      this.$form().on('keyup', '[name=x]', this.onChangeX);
+      this.$form().on('keyup', '[name=y]', this.onChangeY);
+      return this.$form().on('change', '[name=animation]', this.onChangeAnimation);
     };
 
     return ImageEditorView;
@@ -468,7 +525,8 @@
       _results = [];
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         view = _ref1[_i];
-        _results.push(this.$el.append(view.render()));
+        this.$el.append(view.render());
+        _results.push(view.bindEvents());
       }
       return _results;
     };
@@ -505,11 +563,17 @@
     };
 
     ImagesView.prototype.initialize = function() {
+      var _this = this;
+
       this.currentImageIndex = 0;
       this.isAnimating = false;
       this.animator = new Bordeaux.AnimatorView();
       this.preloadImages(this.loadImage);
-      return this.collection.on('reset', this.onCodeChange);
+      this.collection.on('reset', this.onCodeChange);
+      this.collection.on('change', this.onCodeChange);
+      return this.collection.each(function(model) {
+        return model.on('change:click', _this.onCodeChange);
+      });
     };
 
     ImagesView.prototype.currentImage = function() {

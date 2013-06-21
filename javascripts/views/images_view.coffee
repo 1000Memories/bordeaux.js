@@ -9,6 +9,9 @@ class @Bordeaux.ImagesView extends Backbone.View
     @animator = new Bordeaux.AnimatorView()
     @preloadImages(@loadImage)
     @collection.on('reset', @onCodeChange)
+    @collection.on('change', @onCodeChange)
+    @collection.each (model) =>
+      model.on('change:click', @onCodeChange)
 
   currentImage: =>
     @collection.models[@currentImageIndex]

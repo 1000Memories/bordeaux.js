@@ -12,3 +12,4 @@ class @Bordeaux.ImagesEditorView extends Backbone.View
     @$el.html("")
     for view in @views
       @$el.append(view.render())
+      view.bindEvents()

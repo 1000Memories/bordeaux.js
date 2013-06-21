@@ -165,13 +165,23 @@ a#target #pulse {
   position: relative;
   padding-top: 50px; }
   #container #editor-view {
-    border: solid 1px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-bottom: none;
     width: 500px;
-    height: 800px;
     float: left;
     margin: 0 50px; }
   #container #phone-background {
     float: right; }
+
+#editor-view li {
+  padding: 12px 20px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #fff; }
+  #editor-view li .image-url {
+    width: 300px; }
+  #editor-view li .coordinate {
+    width: 40px; }
 
 #images-view {
   position: relative;
