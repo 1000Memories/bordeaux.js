@@ -143,6 +143,7 @@
 }).call(this);
 (function() {
   var _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -150,11 +151,22 @@
     __extends(Images, _super);
 
     function Images() {
-      _ref = Images.__super__.constructor.apply(this, arguments);
+      this.updateSelectedIfSelectedRemoved = __bind(this.updateSelectedIfSelectedRemoved, this);
+      this.initialize = __bind(this.initialize, this);      _ref = Images.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
     Images.prototype.model = Bordeaux.Image;
+
+    Images.prototype.initialize = function() {
+      return this.on('remove', this.updateSelectedIfSelectedRemoved);
+    };
+
+    Images.prototype.updateSelectedIfSelectedRemoved = function(model) {
+      if (Bordeaux.pageState.get('selected') === model) {
+        return Bordeaux.pageState.set('selected', this.at(0));
+      }
+    };
 
     return Images;
 
@@ -195,7 +207,7 @@
       $e = window.HAML.escape;
       $c = window.HAML.cleanValue;
       $o = [];
-      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <a class='remove' href='#'>remove</a>\n  <p>\n    <select name='animation'>");
+      $o.push("<li class='" + (['edit-image-form', "" + ($e($c(Bordeaux.pageState.get('selected') === this.image ? "selected" : "")))].sort().join(' ').replace(/^\s+|\s+$/g, '')) + "' data-cid='" + ($e($c(this.image.cid))) + "'>\n  <input class='image-url' name='url' value='" + ($e($c(this.image.get('url')))) + "' placeholder='Image URL'>\n  <a class='remove' href='#'>&times;</a>\n  <p>\n    <select name='animation'>");
       _ref1 = Bordeaux.animations;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         animation = _ref1[_i];
@@ -409,6 +421,7 @@
     __extends(ImageEditorView, _super);
 
     function ImageEditorView() {
+      this.remove = __bind(this.remove, this);
       this.bindEvents = __bind(this.bindEvents, this);
       this.$form = __bind(this.$form, this);
       this.html = __bind(this.html, this);
@@ -488,6 +501,10 @@
       return this.$form().on('click', '.remove', this.onClickRemove);
     };
 
+    ImageEditorView.prototype.remove = function(done) {
+      return this.$form().slideUp(200, done);
+    };
+
     return ImageEditorView;
 
   })(Backbone.View);
@@ -563,18 +580,21 @@
     };
 
     ImagesEditorView.prototype.onRemoveStep = function(model) {
-      var newViews, view, _i, _len, _ref1;
+      var newViews, removedView, view, _i, _len, _ref1;
 
       newViews = [];
+      removedView = null;
       _ref1 = this.views;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         view = _ref1[_i];
-        if (view.model.cid !== model.cid) {
+        if (view.model.cid === model.cid) {
+          removedView = view;
+        } else {
           newViews.push(view);
         }
       }
       this.views = newViews;
-      return this.render();
+      return removedView.remove(this.render);
     };
 
     return ImagesEditorView;

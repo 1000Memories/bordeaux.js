@@ -43,3 +43,6 @@ class @Bordeaux.ImageEditorView extends Backbone.View
       @onClickForm(e) # select doesn't fire a "click" event
     @$form().on('click', @onClickForm)
     @$form().on('click', '.remove', @onClickRemove)
+
+  remove: (done) =>
+    @$form().slideUp(200, done)

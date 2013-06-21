@@ -176,6 +176,7 @@ a#target #pulse {
   border: 1px solid #ccc;
   border-bottom: none; }
   #editor-view li {
+    position: relative;
     padding: 12px 20px;
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #fff; }
@@ -187,6 +188,17 @@ a#target #pulse {
       width: 300px; }
     #editor-view li .coordinate {
       width: 40px; }
+    #editor-view li .remove {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      color: #999;
+      text-decoration: none;
+      font-size: 20px;
+      padding: 4px 8px; }
+      #editor-view li .remove:hover {
+        color: #555; }
 
 #images-view {
   position: relative;

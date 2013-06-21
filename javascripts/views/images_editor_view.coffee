@@ -27,7 +27,11 @@ class @Bordeaux.ImagesEditorView extends Backbone.View
   onRemoveStep: (model) =>
     # Remove the view corresponding to the removed model (TODO: this should not work this way)
     newViews = []
+    removedView = null
     for view in @views
-      newViews.push(view) unless view.model.cid == model.cid
+      if view.model.cid == model.cid
+        removedView = view
+      else
+        newViews.push(view)
     @views = newViews
-    @render()
+    removedView.remove(@render)
