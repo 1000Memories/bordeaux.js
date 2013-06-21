@@ -506,8 +506,8 @@
       this.$form().on('keyup', '[name=x]', this.onChangeX);
       this.$form().on('keyup', '[name=y]', this.onChangeY);
       this.$form().on('change', '[name=animation]', function(e) {
-        _this.onClickForm(e);
-        return _this.onChangeAnimation(e);
+        _this.onChangeAnimation(e);
+        return _this.onClickForm(e);
       });
       return this.$form().on('click', this.onClickForm);
     };

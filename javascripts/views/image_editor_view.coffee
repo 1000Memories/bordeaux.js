@@ -35,6 +35,6 @@ class @Bordeaux.ImageEditorView extends Backbone.View
     @$form().on('keyup', '[name=x]', @onChangeX)
     @$form().on('keyup', '[name=y]', @onChangeY)
     @$form().on 'change', '[name=animation]', (e) =>
-      @onClickForm(e) # select doesn't fire a "click" event
       @onChangeAnimation(e)
+      @onClickForm(e) # select doesn't fire a "click" event
     @$form().on('click', @onClickForm)
